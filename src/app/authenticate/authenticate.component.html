@@ -1,41 +1,50 @@
-<form [formGroup]="registrationForm" (ngSubmit)="onRegistrationSubmit()">
-    <label>
-        First Name:
-        <input type="text" formControlName="firstName">
-    </label>
-
-    <label>
-        Last Name:
-        <input type="text" formControlName="lastName">
-    </label>
-
-    <label>
-        Username:
-        <input type="text" formControlName="username">
-    </label>
-
-    <label>
-        Email Address:
-        <input type="email" formControlName="emailAddress">
-    </label>
-
-    <label>
-        Password:
-        <input type="password" formControlName="password">
-    </label>
-
-    <button type="submit">Register</button>
-</form>
 <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
     <label>
-        Username:
-        <input type="text" formControlName="username">
+        <input type="text" formControlName="username" placeholder="Username">
     </label>
 
     <label>
-        Password:
-        <input type="password" formControlName="password">
+        <input type="password" formControlName="password" placeholder="Password">
     </label>
+    <div *ngIf="invalidPassword">
+        Username or password incorrect
+    </div>
 
     <button type="submit">Login</button>
+</form>
+
+<form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
+    <label>
+        <input type="text" formControlName="emailAddress" placeholder="Email Address">
+    </label>
+
+    <button type="submit" (ngSubmit)="resetPassword()">Reset Password</button>
+</form>
+
+<form [formGroup]="registrationForm" (ngSubmit)="onRegistrationSubmit()">
+    <label>
+        <input type="text" formControlName="firstName" placeholder="First Name">
+    </label>
+
+    <label>
+        <input type="text" formControlName="lastName" placeholder="Last Name">
+    </label>
+
+    <label>
+        <input type="text" formControlName="username" placeholder="Username">
+    </label>
+
+    <label>
+        <input type="email" formControlName="emailAddress" placeholder="Email Address">
+    </label>
+
+    <label>
+        <input type="password" formControlName="password" placeholder="Password">
+    </label>
+    <div *ngIf="successfulRegistration">
+        Registration successful. Please login
+    </div>
+
+    <button type="submit">Register</button>
+
 </form>
