@@ -1,0 +1,10 @@
+<div class="dashboard">
+    <div class="user-details">
+        <h2>Hello, {{ userDetails.firstName }} {{ userDetails.lastName }}</h2>
+        <ul>
+            <li><strong>Username:</strong> {{ userDetails.username }}</li>
+            <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
+        </ul>
+    </div>
+    <button (click)="logout()">Logout</button>
+</div>
