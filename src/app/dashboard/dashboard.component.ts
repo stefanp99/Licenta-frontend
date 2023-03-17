@@ -12,6 +12,12 @@ export class DashboardComponent implements OnInit {
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private loggedUserUrl = 'http://localhost:8080/users/logged-user-dto';
   userDetails: any = {};
+  tabs: any[] = ['Tab 1', 'Tab 2', 'Tab 3'];
+  activeTab: any = this.tabs[0];
+
+  selectTab(tab: any) {
+    this.activeTab = tab;
+  }
 
 
 

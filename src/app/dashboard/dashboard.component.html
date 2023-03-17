@@ -1,10 +1,20 @@
-<div class="dashboard">
-    <div class="user-details">
-        <h2>Hello, {{ userDetails.firstName }} {{ userDetails.lastName }}</h2>
-        <ul>
-            <li><strong>Username:</strong> {{ userDetails.username }}</li>
-            <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
-        </ul>
-    </div>
-    <button (click)="logout()">Logout</button>
+<div class="user-details">
+    <h2>Hello, {{ userDetails.firstName }} {{ userDetails.lastName }}</h2>
+    <ul>
+        <li><strong>Username:</strong> {{ userDetails.username }}</li>
+        <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
+    </ul>
+    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+</div>
+
+<div class="tabs">
+    <button *ngFor="let tab of tabs" [class.active]="activeTab === tab" (click)="selectTab(tab)">
+        {{tab}}
+    </button>
+
+    <ng-container *ngFor="let tab of tabs">
+        <div [hidden]="activeTab !== tab">
+            {{tab}}
+        </div>
+    </ng-container>
 </div>

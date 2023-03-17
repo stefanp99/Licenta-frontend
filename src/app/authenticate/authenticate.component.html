@@ -1,50 +1,73 @@
-<form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-    <label>
-        <input type="text" formControlName="username" placeholder="Username">
-    </label>
-
-    <label>
-        <input type="password" formControlName="password" placeholder="Password">
-    </label>
-    <div *ngIf="invalidPassword">
+<form [formGroup]="loginForm">
+    <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="username" placeholder="Username">
+        <mat-error *ngIf="loginForm.get('username').hasError('required')">Username is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password').hasError('required')">Password is required</mat-error>
+    </mat-form-field>
+    <mat-error *ngIf="invalidPassword">
         Username or password incorrect
-    </div>
-
-    <button type="submit">Login</button>
+    </mat-error>
+    <button mat-raised-button (click)="onLoginSubmit()">Login</button>
 </form>
 
-<form [formGroup]="resetPasswordForm" (ngSubmit)="resetPassword()">
-    <label>
-        <input type="text" formControlName="emailAddress" placeholder="Email Address">
-    </label>
-
-    <button type="submit" (ngSubmit)="resetPassword()">Reset Password</button>
+<form [formGroup]="resetPasswordForm">
+    <mat-form-field appearance="fill">
+        <mat-label>Email Address</mat-label>
+        <input matInput type="text" formControlName="emailAddress" placeholder="Email Address">
+        <mat-error *ngIf="loginForm.get('username').hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="loginForm.get('username').hasError('email')">Invalid email format</mat-error>
+    </mat-form-field>
+    <button mat-raised-button (click)="resetPassword()">Reset Password</button>
 </form>
 
-<form [formGroup]="registrationForm" (ngSubmit)="onRegistrationSubmit()">
-    <label>
-        <input type="text" formControlName="firstName" placeholder="First Name">
-    </label>
+<form [formGroup]="registrationForm">
+    <mat-form-field appearance="fill">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" formControlName="firstName" placeholder="First Name">
+        <mat-error *ngIf="registrationForm.get('firstName').hasError('required')">First Name is required</mat-error>
+    </mat-form-field>
 
-    <label>
-        <input type="text" formControlName="lastName" placeholder="Last Name">
-    </label>
+    <mat-form-field appearance="fill">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" formControlName="lastName" placeholder="Last Name">
+        <mat-error *ngIf="registrationForm.get('lastName').hasError('required')">Last Name is required</mat-error>
+    </mat-form-field>
 
-    <label>
-        <input type="text" formControlName="username" placeholder="Username">
-    </label>
+    <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="username" placeholder="Username">
+        <mat-error *ngIf="registrationForm.get('username').hasError('required')">Username is required</mat-error>
+    </mat-form-field>
 
-    <label>
-        <input type="email" formControlName="emailAddress" placeholder="Email Address">
-    </label>
+    <mat-form-field appearance="fill">
+        <mat-label>Email Address</mat-label>
+        <input matInput type="text" formControlName="emailAddress" placeholder="Email Address">
+        <mat-error *ngIf="registrationForm.get('username').hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="registrationForm.get('username').hasError('email')">Invalid email format</mat-error>
+    </mat-form-field>
 
-    <label>
-        <input type="password" formControlName="password" placeholder="Password">
-    </label>
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="registrationForm.get('password').hasError('required')">Password is required</mat-error>
+    </mat-form-field>
     <div *ngIf="successfulRegistration">
         Registration successful. Please login
     </div>
 
-    <button type="submit">Register</button>
+    <button mat-raised-button (click)="onRegistrationSubmit()">Login</button>
 
 </form>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-authenticate',
@@ -9,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./authenticate.component.css']
 })
 export class AuthenticateComponent implements OnInit {
+  hide = true;
   registrationForm: FormGroup;
   loginForm: FormGroup;
   resetPasswordForm: FormGroup;
@@ -18,7 +20,7 @@ export class AuthenticateComponent implements OnInit {
   private registrationUrl = 'http://localhost:8080/auth/register';
   private authenticateUrl = 'http://localhost:8080/auth/authenticate';
   private resetPasswordUrl = 'http://localhost:8080/auth/email-reset-password';
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.registrationForm = new FormGroup({
