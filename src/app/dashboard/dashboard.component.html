@@ -7,14 +7,8 @@
     <button mat-raised-button color="primary" (click)="logout()">Logout</button>
 </div>
 
-<div class="tabs">
-    <button *ngFor="let tab of tabs" [class.active]="activeTab === tab" (click)="selectTab(tab)">
-        {{tab}}
-    </button>
-
-    <ng-container *ngFor="let tab of tabs">
-        <div [hidden]="activeTab !== tab">
-            {{tab}}
-        </div>
-    </ng-container>
-</div>
+<mat-tab-group>
+    <mat-tab label="Deliveries"> <app-deliveries></app-deliveries> </mat-tab>
+    <mat-tab label="Deviations"> Content 2 </mat-tab>
+    <mat-tab label="Tolerances"> Content 3 </mat-tab>
+</mat-tab-group>

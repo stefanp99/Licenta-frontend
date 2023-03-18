@@ -1,0 +1,127 @@
+<button mat-raised-button color="primary" (click)="openDialog()">Add Delivery</button>
+
+<ng-template #dialogTemplate let-formData>
+    <h2 mat-dialog-title>Dialog Title</h2>
+    <mat-dialog-content>
+        <form [formGroup]="addDeliveryForm">
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Expected Quantity
+                    <mat-icon class="icon">email</mat-icon>
+                </mat-label>
+                <input matInput type="number" formControlName="expectedQuantity" placeholder="Expected Quantity">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Expected Delivery Date
+                    <mat-icon class="icon">email</mat-icon>
+                </mat-label>
+                <input matInput type="datetime-local" formControlName="expectedDeliveryDate"
+                    placeholder="Expected Delivery Date">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    Contract ID
+                    <mat-icon class="icon">email</mat-icon>
+                </mat-label>
+                <input matInput type="number" formControlName="contractId" placeholder="Contract ID">
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" (click)="submitForm()">Submit</button>
+    </mat-dialog-actions>
+</ng-template>
+
+
+<mat-form-field appearance="fill">
+    <mat-label>Delivery status</mat-label>
+    <select matNativeControl (change)="getDeliveriesByStatus($event.target.value)">
+        <option value="undispatched">Undispatched</option>
+        <option value="dispatched">Dispatched</option>
+        <option value="delivered">Delivered</option>
+        <option value="all">All</option>
+    </select>
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8">
+
+    <ng-container matColumnDef="expectedQuantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected quantity">
+            Expected Quantity
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.expectedQuantity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
+            Status
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dispatchDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dispatch date">
+            Dispatch Date
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.dispatchDate | date:'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deliveryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by delivery date">
+            Delivery Date
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.deliveryDate | date:'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="supplierId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
+            Supplier ID
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.supplierId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="materialCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
+            Material Code
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.materialCode}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="pricePerUnit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by price per unit">
+            Price per Unit
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.pricePerUnit}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="plantId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
+            Plant ID
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.plantId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expectedDeliveryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected delivery date">
+            Expected Delivery Date
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.expectedDeliveryDate | date:'medium'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dispatchDelivery">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let delivery">
+            <button *ngIf="delivery.status === 'undispatched'" mat-raised-button color="primary"
+                (click)="dispatchDelivery(delivery)">Dispatch</button>
+            <button *ngIf="delivery.status === 'dispatched'" mat-raised-button color="primary"
+                (click)="deliverDelivery(delivery)">Deliver</button>
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

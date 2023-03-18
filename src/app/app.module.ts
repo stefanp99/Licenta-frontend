@@ -15,6 +15,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { RegisterSuccessfulDialogComponent } from './register-successful-dialog/register-successful-dialog.component';
+import { DeliveriesComponent } from './deliveries/deliveries.component';
 
 
 @NgModule({
@@ -23,7 +30,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     AuthenticateComponent,
     DashboardComponent,
     ChangePasswordComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    RegisterSuccessfulDialogComponent,
+    DeliveriesComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +47,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatIconModule,
     MatDialogModule,
+    MatGridListModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatTableModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

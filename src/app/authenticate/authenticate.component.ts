@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { RegisterSuccessfulDialogComponent } from '../register-successful-dialog/register-successful-dialog.component';
 
 @Component({
   selector: 'app-authenticate',
@@ -14,7 +15,7 @@ export class AuthenticateComponent implements OnInit {
   registrationForm: FormGroup;
   loginForm: FormGroup;
   resetPasswordForm: FormGroup;
-  invalidPassword: boolean;
+  invalidPassword: boolean = false;
   successfulRegistration: boolean;
 
   private registrationUrl = 'http://localhost:8080/auth/register';
@@ -48,6 +49,7 @@ export class AuthenticateComponent implements OnInit {
         console.log('Registration successful!', response);
         this.registrationForm.reset();
         this.successfulRegistration = true;
+        this.dialog.open(RegisterSuccessfulDialogComponent);
         // this.loginForm.setValue({ username: this.registrationForm.value.username, password: this.registrationForm.value.password })
         // this.onLoginSubmit();
       },
