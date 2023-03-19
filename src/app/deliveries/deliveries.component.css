@@ -3,3 +3,26 @@ mat-form-field {
     flex-direction: column;
     align-items: flex-start;
 }
+
+.filters {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.addDeliveryButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    border-color: currentColor;
+}

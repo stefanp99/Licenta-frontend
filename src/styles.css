@@ -9,3 +9,7 @@ body {
     margin: 10;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+input[type=number] {
+    -moz-appearance: textfield;
+}

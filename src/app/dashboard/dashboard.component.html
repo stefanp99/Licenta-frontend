@@ -1,12 +1,18 @@
-<div class="user-details">
-    <h2>Hello, {{ userDetails.firstName }} {{ userDetails.lastName }}</h2>
-    <ul>
-        <li><strong>Username:</strong> {{ userDetails.username }}</li>
-        <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
-    </ul>
-    <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-</div>
-
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Hello, {{ userDetails.firstName }} {{ userDetails.lastName}}!</mat-card-title>
+        <mat-card-subtitle>
+            <ul>
+                <li><strong>Username:</strong> {{ userDetails.username }}</li>
+                <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
+            </ul>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+    </mat-card-actions>
+</mat-card>
+<br /><br />
 <mat-tab-group>
     <mat-tab label="Deliveries"> <app-deliveries></app-deliveries> </mat-tab>
     <mat-tab label="Deviations"> Content 2 </mat-tab>
