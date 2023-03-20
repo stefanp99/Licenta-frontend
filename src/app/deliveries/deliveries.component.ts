@@ -8,24 +8,9 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-export interface Contract {
-  id: number,
-  supplierId: string,
-  materialCode: string,
-  pricePerUnit: number,
-  plantId: number
-}
-
-export interface Delivery {
-  id: number,
-  expectedQuantity: number,
-  status: string,
-  dispatchDate: Date,
-  deliveryDate: Date,
-  contract: Contract,
-  expectedDeliveryDate: Date
-}
+import { Delivery } from './delivery';
+import { Contract } from '../contracts/contract';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface Deviation {
   id: number;
@@ -41,7 +26,7 @@ export interface DeliveryData {
 }
 
 export interface Plant {
-  id: number,
+  id: string,
   cityCountry: string,
   segment: string,
   country: string,
@@ -81,22 +66,27 @@ export class DeliveriesComponent implements OnInit {
   @ViewChild('dialogDispatchDelivery') dialogDispatchDelivery: any;
   @ViewChild('dialogDeliverDelivery') dialogDeliverDelivery: any;
   @ViewChild('dialogDeviationCreated') dialogDeviationCreated: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
     private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar) {
   }
 
-  @ViewChild(MatSort) sort: MatSort;
+  ngAfterViewInit() {
+    this.dataSourceDeliveries.paginator = this.paginator;
+  }
+
 
   ngOnInit(): void {
     this.getDeliveriesByStatus('undispatched');
     this.firstFormGroup = new FormGroup({
-      expectedQuantity: new FormControl(0, []),
+      expectedQuantity: new FormControl(null, []),
       expectedDeliveryDate: new FormControl('', []),
       materialCode: new FormControl('', [])
     });
     this.realQuantityFormGroup = new FormGroup({
-      realQuantity: new FormControl(0, [])
+      realQuantity: new FormControl(null, [])
     });
     this.dataSourceDeliveries.sortingDataAccessor = (delivery, property) => {
       switch (property) {
@@ -122,7 +112,6 @@ export class DeliveriesComponent implements OnInit {
         this.plants = response;
         this.dataSourcePlants.data = this.plants;
         this.dataSourcePlants.sort = this.sort;
-        console.log(this.dataSourcePlants);
       },
       error => {
         console.error(error);
@@ -263,6 +252,11 @@ export class DeliveriesComponent implements OnInit {
         }
       );
     }
+  }
+
+  getCurrentDateTime(): string {
+    // Use toISOString() to get date-time in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
+    return new Date().toISOString().slice(0, 16);
   }
 
   openSnackBar(message: string, action: string, duration: number) {

@@ -29,6 +29,7 @@ export class NewPasswordComponent implements OnInit {
     this.http.post(this.newPasswordUrl, formValue).subscribe(
       (response: any) => {
         console.log('Authenticate successful!', response);
+        localStorage.removeItem('resetPasswordToken');
         localStorage.setItem('token', response.token);
         this.router.navigate(['/dashboard']);
       },

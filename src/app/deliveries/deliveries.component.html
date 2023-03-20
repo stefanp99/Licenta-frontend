@@ -17,15 +17,15 @@
             <mat-form-field appearance="fill">
                 <mat-label>
                     Real Quantity Delivered
-                    <mat-icon class="icon">email</mat-icon>
+                    <mat-icon class="icon">local_shipping</mat-icon>
                 </mat-label>
                 <input matInput type="number" formControlName="realQuantity" placeholder="Real Quantity" min="1"
                     required>
             </mat-form-field>
+            <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" mat-dialog-close
+                (click)="deliverDelivery(clickedDelivery)">Submit</button>
         </form>
-        <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
-        <button mat-raised-button color="primary" mat-dialog-close
-            (click)="deliverDelivery(clickedDelivery)">Submit</button>
     </div>
 </ng-template>
 
@@ -46,25 +46,25 @@
                     <mat-form-field appearance="fill">
                         <mat-label>
                             Material Code
-                            <mat-icon class="icon">email</mat-icon>
+                            <mat-icon class="icon">confirmation_number</mat-icon>
                         </mat-label>
                         <input matInput type="text" formControlName="materialCode" placeholder="Material Code" required>
                     </mat-form-field>
                     <mat-form-field appearance="fill">
                         <mat-label>
                             Expected Quantity
-                            <mat-icon class="icon">email</mat-icon>
+                            <mat-icon class="icon">local_shipping</mat-icon>
                         </mat-label>
-                        <input matInput type="number" formControlName="expectedQuantity" placeholder="Expected Quantity"
-                            min="1" required>
+                        <input matInput type="number" formControlName="expectedQuantity" min="1"
+                            placeholder="Expected Quantity" required>
                     </mat-form-field>
                     <mat-form-field appearance="fill">
                         <mat-label>
                             Expected Delivery Date
-                            <mat-icon class="icon">email</mat-icon>
+                            <mat-icon class="icon">date_range</mat-icon>
                         </mat-label>
                         <input matInput type="datetime-local" formControlName="expectedDeliveryDate"
-                            placeholder="Expected Delivery Date" required>
+                            placeholder="Expected Delivery Date" required min="{{ getCurrentDateTime() }}">
                     </mat-form-field>
                     <div>
                         <button mat-raised-button color="primary" matStepperNext>Next</button>
@@ -242,3 +242,5 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumnsDeliveries"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsDeliveries;"></tr>
 </table>
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+</mat-paginator>
