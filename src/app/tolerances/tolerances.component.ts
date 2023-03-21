@@ -15,6 +15,7 @@ import { Supplier } from '../suppliers/supplier';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -53,13 +54,15 @@ export class TolerancesComponent implements OnInit {
   dayUpperLimits: number[] = [];
   dayLowerLimits: number[] = [];
   editMode: boolean = false;
+  clickedTolerance: Tolerance;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('dialogAddTolerance') dialogAddTolerance: any;
+  @ViewChild('dialogDeleteTolerance') dialogDeleteTolerance: any;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer) {
+    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar) {
   }
 
   ngAfterViewInit() {
@@ -222,13 +225,14 @@ export class TolerancesComponent implements OnInit {
     const options = { params: httpParams, headers: environment.headers };
     this.http.post<Tolerance>(this.addToleranceUrl, null, options).subscribe(
       response => {
+        this.searchTolerances();
+        this.openSnackBar('Tolerance added', 'Close', 5000);
+        this.clearForms();
       },
       error => {
         console.error(error);
       }
     );
-    this.clearForms();
-    this.searchTolerances();
   }
 
   openDialogAddTolerance() {
@@ -268,12 +272,13 @@ export class TolerancesComponent implements OnInit {
     const options = { params: httpParams, headers: environment.headers };
     this.http.put<Tolerance>(this.updateToleranceUrl, null, options).subscribe(
       response => {
+        this.searchTolerances();
+        this.openSnackBar('Tolerance updated', 'Close', 5000);
       },
       error => {
         console.error(error);
       }
     );
-    this.searchTolerances();
   }
 
   deleteTolerance(tolerance: Tolerance) {
@@ -283,12 +288,29 @@ export class TolerancesComponent implements OnInit {
     const options = { params: httpParams, headers: environment.headers };
     this.http.delete<Tolerance>(this.deleteToleranceUrl, options).subscribe(
       response => {
+        this.searchTolerances();
+        this.openSnackBar('Tolerance deleted', 'Close', 5000);
       },
       error => {
         console.error(error);
       }
     );
-    this.searchTolerances();
+  }
+
+  openDialogDeleteTolerance(tolerance: Tolerance) {
+    this.clickedTolerance = tolerance;
+    const dialogRef = this.dialog.open(this.dialogDeleteTolerance, {
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  openSnackBar(message: string, action: string, duration: number) {
+    this._snackBar.open(message, action, {
+      duration: duration
+    });
   }
 
   private _filterPlants(value: string): string[] {

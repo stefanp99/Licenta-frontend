@@ -1,0 +1,34 @@
+.filters {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.searchFormButton {
+    margin: 10px;
+}
+
+/* .modifyCells {
+    height: 52px;
+} */
+
+.mat-button-toggle {
+    background-color: #7b1fa2;
+}
+
+.mat-button-toggle-checked {
+    background-color: #342738;
+}
+
+mat-form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.addContractsButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

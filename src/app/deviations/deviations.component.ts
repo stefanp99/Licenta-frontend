@@ -62,13 +62,13 @@ export class DeviationsComponent implements OnInit {
     this.dataSourceDeviations.sortingDataAccessor = (deviation, property) => {
       switch (property) {
         case 'supplierId':
-          return deviation.delivery.contract.supplierId;
+          return deviation.delivery.contract.supplier.id;
         case 'materialCode':
           return deviation.delivery.contract.materialCode;
         case 'pricePerUnit':
           return deviation.delivery.contract.pricePerUnit;
         case 'plantId':
-          return deviation.delivery.contract.pricePerUnit;
+          return deviation.delivery.contract.plant.id;
         default:
           return deviation[property];
       }

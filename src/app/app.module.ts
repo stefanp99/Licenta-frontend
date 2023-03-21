@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDividerModule } from '@angular/material/divider';
 import { RegisterSuccessfulDialogComponent } from './register-successful-dialog/register-successful-dialog.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { DeviationsComponent } from './deviations/deviations.component';
@@ -76,6 +77,7 @@ import { PlantsComponent } from './plants/plants.component';
     MatPaginatorModule,
     MatAutocompleteModule,
     MatButtonToggleModule,
+    MatDividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

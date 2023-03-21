@@ -1,1 +1,221 @@
-<p>contracts works!</p>
+<ng-template #dialogAddContract>
+    <form [formGroup]="addContractsFormGroup">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Supplier ID
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="fill"
+                [formControl]="myControlSuppliersAdd" [matAutocomplete]="autoSuppliers" required>
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Plant ID
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="fill"
+                [formControl]="myControlPlantsAdd" [matAutocomplete]="autoPlants" required>
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Material Code
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode" placeholder="Material Code" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Price per Unit
+                <span class="material-symbols-outlined">
+                    sell
+                </span>
+            </mat-label>
+            <input matInput type="number" min="1" formControlName="pricePerUnit" placeholder="Price per Unit" required>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="addContract()" class="searchFormButton" mat-dialog-close>Add
+            Contract</button>
+        <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton" mat-dialog-close>Reset
+            Search</button>
+    </form>
+</ng-template>
+
+<ng-template #dialogDeleteContract>
+    <h1 mat-dialog-title>Delete Contract</h1>
+    <div mat-dialog-content>
+        Are you sure you want to delete contract?
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn" mat-dialog-close>No</button>
+        <button mat-raised-button color="primary" mat-dialog-close
+            (click)="deleteContract(clickedContract)">Yes</button>
+    </div>
+</ng-template>
+
+<br />
+<mat-divider></mat-divider>
+<br />
+<button mat-raised-button color="primary" (click)="openDialogAddContract()" class="addContractsButton">Add
+    Contract</button>
+<br />
+<mat-divider></mat-divider>
+<br />
+<div class="filters">
+
+    <form [formGroup]="getContractsFormGroup">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Supplier ID
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="fill"
+                [formControl]="myControlSuppliers" [matAutocomplete]="autoSuppliers">
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Plant ID
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="fill"
+                [formControl]="myControlPlants" [matAutocomplete]="autoPlants">
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Material Code
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode" placeholder="Material Code">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchContracts()" class="searchFormButton">Search
+            Contract</button>
+        <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton">Reset Search</button>
+    </form>
+    <br />
+    <mat-form-field appearance="fill">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilterContracts($event)" placeholder="Ex. ium" #input>
+    </mat-form-field>
+</div>
+
+<mat-button-toggle color="primary" (click)="changeEditMode()">
+    <span class="material-symbols-outlined">
+        edit
+    </span>
+</mat-button-toggle>
+<table mat-table [dataSource]="dataSourceContracts" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8">
+
+    <ng-container matColumnDef="supplierId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
+            Supplier ID
+        </th>
+        <td mat-cell *matCellDef="let contract"> {{contract.supplier.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="supplierName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier name">
+            Supplier Name
+        </th>
+        <td mat-cell *matCellDef="let contract"> {{contract.supplier.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="materialCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
+            Material Code
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let contract">{{contract.materialCode}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let contract; let i = index" class="modifyCells">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="materialCodes[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="plantId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
+            Plant ID
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let contract">{{contract.plant.id}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let contract; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="plantIds[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="pricePerUnit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Price per Unit">
+            Price per Unit
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let contract">{{contract.pricePerUnit}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let contract; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="pricePerUnits[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef>Update</th>
+        <td mat-cell *matCellDef="let contract; let i = index">
+            <button mat-raised-button color="primary" (click)="updateContract(contract, i)"
+                [disabled]="!editMode">Update</button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let contract">
+            <button mat-raised-button color="primary" (click)="openDialogDeleteContract(contract)"
+                [disabled]="!editMode">Delete</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsContracts"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsContracts;"></tr>
+</table>
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+</mat-paginator>

@@ -86,10 +86,28 @@
     </form>
 </ng-template>
 
+<ng-template #dialogDeleteTolerance>
+    <h1 mat-dialog-title>Delete Tolerance</h1>
+    <div mat-dialog-content>
+        Are you sure you want to delete tolerance?
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn" mat-dialog-close>No</button>
+        <button mat-raised-button color="primary" mat-dialog-close
+            (click)="deleteTolerance(clickedTolerance)">Yes</button>
+    </div>
+</ng-template>
+
 <br />
+<mat-divider></mat-divider>
+<br />
+<button mat-raised-button color="primary" (click)="openDialogAddTolerance()" class="addToleranceFormButton">Add
+    Tolerance</button>
+<br />
+<mat-divider></mat-divider>
+<br />
+
 <div class="filters">
-    <button mat-raised-button color="primary" (click)="openDialogAddTolerance()" class="searchFormButton">Add
-        Tolerance</button>
     <form [formGroup]="getTolerancesFormGroup">
         <mat-form-field appearance="fill">
             <mat-label>
@@ -170,7 +188,7 @@
             <td mat-cell *matCellDef="let tolerance">{{tolerance.materialCode}}</td>
         </ng-container>
         <ng-container *ngIf="editMode === true">
-            <td mat-cell *matCellDef="let tolerance; let i = index">
+            <td mat-cell *matCellDef="let tolerance; let i = index" class="modifyCells">
                 <mat-form-field appearance="fill" class="modifyCells">
                     <input matInput type="text" [(ngModel)]="materialCodes[i]">
                 </mat-form-field>
@@ -269,7 +287,7 @@
     <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef>Delete</th>
         <td mat-cell *matCellDef="let tolerance">
-            <button mat-raised-button color="primary" (click)="deleteTolerance(tolerance)"
+            <button mat-raised-button color="primary" (click)="openDialogDeleteTolerance(tolerance)"
                 [disabled]="!editMode">Delete</button>
         </td>
     </ng-container>

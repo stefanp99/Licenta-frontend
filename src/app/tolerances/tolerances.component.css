@@ -5,14 +5,19 @@
     width: 25%;
 }
 
+.addToleranceFormButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .searchFormButton {
     margin: 10px;
 }
 
-
-
 .modifyCells {
     width: 120px;
+    /* height: 52px; */
 }
 
 .mat-button-toggle {

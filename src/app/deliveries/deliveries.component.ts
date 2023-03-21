@@ -39,7 +39,7 @@ export class DeliveriesComponent implements OnInit {
   private deliveriesByStatusUrl = 'http://localhost:8080/deliveries/deliveries-by-status';
   private addDeliveryUrl = 'http://localhost:8080/deliveries/add-delivery';
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
-  private contractsUrl = 'http://localhost:8080/contracts/by-materialCode-plantId';
+  private contractsUrl = 'http://localhost:8080/contracts/get-by-plantId-supplierId-materialCode';
   private dispatchUrl = 'http://localhost:8080/deliveries/dispatch-delivery';
   private deliverUrl = 'http://localhost:8080/deliveries/deliver-delivery';
   orders: Delivery[];
@@ -84,7 +84,7 @@ export class DeliveriesComponent implements OnInit {
     this.dataSourceDeliveries.sortingDataAccessor = (delivery, property) => {
       switch (property) {
         case 'supplierId':
-          return delivery.contract.supplierId;
+          return delivery.contract.supplier.id;
         case 'materialCode':
           return delivery.contract.materialCode;
         case 'pricePerUnit':

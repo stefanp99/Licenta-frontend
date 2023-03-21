@@ -1,7 +1,10 @@
+import { Plant } from "../plants/plant";
+import { Supplier } from "../suppliers/supplier";
+
 export interface Contract {
     id: number,
-    supplierId: string,
+    supplier: Supplier,
     materialCode: string,
     pricePerUnit: number,
-    plantId: number
+    plant: Plant
 }
