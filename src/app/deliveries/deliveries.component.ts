@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Delivery } from './delivery';
 import { Contract } from '../contracts/contract';
 import { MatPaginator } from '@angular/material/paginator';
+import { Plant } from '../plants/plant';
 
 export interface Deviation {
   id: number;
@@ -25,22 +26,14 @@ export interface DeliveryData {
   deviations: Deviation[];
 }
 
-export interface Plant {
-  id: string,
-  cityCountry: string,
-  segment: string,
-  country: string,
-  city: string
-}
-
 @Component({
   selector: 'app-deliveries',
   templateUrl: './deliveries.component.html',
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-  displayedColumnsDeliveries: string[] = ['expectedQuantity', 'status', 'dispatchDate', 'deliveryDate', 'supplierId',
-    'materialCode', 'pricePerUnit', 'plantId', 'expectedDeliveryDate', 'dispatchDelivery'];
+  displayedColumnsDeliveries: string[] = ['status', 'dispatchDate', 'deliveryDate', 'supplierId',
+    'materialCode', 'pricePerUnit', 'plantId', 'expectedQuantity', 'expectedDeliveryDate', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
   private deliveriesByStatusUrl = 'http://localhost:8080/deliveries/deliveries-by-status';
@@ -127,7 +120,6 @@ export class DeliveriesComponent implements OnInit {
         this.contracts = response;
         this.dataSourceContracts.data = this.contracts;
         this.dataSourceContracts.sort = this.sort;
-        console.log(this.dataSourceContracts);
       },
       error => {
         console.error(error);
@@ -143,7 +135,6 @@ export class DeliveriesComponent implements OnInit {
         this.orders = response;
         this.dataSourceDeliveries.data = this.orders;
         this.dataSourceDeliveries.sort = this.sort;
-        console.log(this.dataSourceDeliveries);
       },
       error => {
         console.error(error);
@@ -172,7 +163,6 @@ export class DeliveriesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -196,7 +186,6 @@ export class DeliveriesComponent implements OnInit {
       );
       this.openSnackBar('Delivery delivered!', 'Close', 5000);
     }
-    console.log(delivery.id);
   }
 
   openDialogDeliverDelivery() {
@@ -205,7 +194,6 @@ export class DeliveriesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -215,7 +203,6 @@ export class DeliveriesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 
@@ -227,7 +214,6 @@ export class DeliveriesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
 

@@ -25,12 +25,15 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RegisterSuccessfulDialogComponent } from './register-successful-dialog/register-successful-dialog.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { DeviationsComponent } from './deviations/deviations.component';
 import { ContractsComponent } from './contracts/contracts.component';
 import { TolerancesComponent } from './tolerances/tolerances.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
+import { PlantsComponent } from './plants/plants.component';
 
 
 @NgModule({
@@ -45,7 +48,8 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
     DeviationsComponent,
     ContractsComponent,
     TolerancesComponent,
-    SuppliersComponent
+    SuppliersComponent,
+    PlantsComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +74,8 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
     MatSnackBarModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    MatAutocompleteModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,281 @@
-<p>tolerances works!</p>
+<ng-template #dialogAddTolerance>
+    <form [formGroup]="addTolerancesFormGroup">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Supplier ID
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="fill"
+                [formControl]="myControlSuppliersAdd" [matAutocomplete]="autoSuppliers" required>
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Plant ID
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="fill"
+                [formControl]="myControlPlantsAdd" [matAutocomplete]="autoPlants">
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Material Code
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode" placeholder="Material Code">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Qty Upper Limit
+                <span class="material-symbols-outlined">
+                    production_quantity_limits
+                </span>
+            </mat-label>
+            <input matInput type="number" min="0" formControlName="qtyUpperLimit" placeholder="Qty Upper Limit">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Qty Lower Limit
+                <span class="material-symbols-outlined">
+                    production_quantity_limits
+                </span>
+            </mat-label>
+            <input matInput type="number" min="0" formControlName="qtyLowerLimit" placeholder="Qty Lower Limit">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Day Upper Limit
+                <span class="material-symbols-outlined">
+                    today
+                </span>
+            </mat-label>
+            <input matInput type="number" min="0" formControlName="dayUpperLimit" placeholder="Day Upper Limit">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Day Lower Limit
+                <span class="material-symbols-outlined">
+                    today
+                </span>
+            </mat-label>
+            <input matInput type="number" min="0" formControlName="dayLowerLimit" placeholder="Day Lower Limit">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="addTolerance()" class="searchFormButton" mat-dialog-close>Add
+            Tolerance</button>
+        <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton" mat-dialog-close>Reset
+            Search</button>
+    </form>
+</ng-template>
+
+<br />
+<div class="filters">
+    <button mat-raised-button color="primary" (click)="openDialogAddTolerance()" class="searchFormButton">Add
+        Tolerance</button>
+    <form [formGroup]="getTolerancesFormGroup">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Supplier ID
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="fill"
+                [formControl]="myControlSuppliers" [matAutocomplete]="autoSuppliers">
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Plant ID
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="fill"
+                [formControl]="myControlPlants" [matAutocomplete]="autoPlants">
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>
+                Material Code
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode" placeholder="Material Code">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchTolerances()" class="searchFormButton">Search
+            Tolerance</button>
+        <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton">Reset Search</button>
+    </form>
+    <br />
+    <mat-form-field appearance="fill">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilterTolerances($event)" placeholder="Ex. ium" #input>
+    </mat-form-field>
+</div>
+
+<mat-button-toggle color="primary" (click)="changeEditMode()">
+    <span class="material-symbols-outlined">
+        edit
+    </span>
+</mat-button-toggle>
+<table mat-table [dataSource]="dataSourceTolerances" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8">
+
+    <ng-container matColumnDef="supplierId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
+            Supplier ID
+        </th>
+        <td mat-cell *matCellDef="let tolerance"> {{tolerance.supplier.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="supplierName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier name">
+            Supplier Name
+        </th>
+        <td mat-cell *matCellDef="let tolerance"> {{tolerance.supplier.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="materialCode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
+            Material Code
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.materialCode}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="materialCodes[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="plantId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
+            Plant ID
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.plantId}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="plantIds[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="qtyUpperLimit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Upper Limit">
+            Qty Upper Limit
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyUpperLimit}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="qtyUpperLimits[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="qtyLowerLimit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Lower Limit">
+            Qty Lower Limit
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyLowerLimit}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="qtyLowerLimits[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="dayUpperLimit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Upper Limit">
+            Day Upper Limit
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.dayUpperLimit}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="dayUpperLimits[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="dayLowerLimit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Lower Limit">
+            Day Lower Limit
+        </th>
+        <ng-container *ngIf="editMode === false">
+            <td mat-cell *matCellDef="let tolerance">{{tolerance.dayLowerLimit}}</td>
+        </ng-container>
+        <ng-container *ngIf="editMode === true">
+            <td mat-cell *matCellDef="let tolerance; let i = index">
+                <mat-form-field appearance="fill" class="modifyCells">
+                    <input matInput type="text" [(ngModel)]="dayLowerLimits[i]">
+                </mat-form-field>
+            </td>
+        </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+        <th mat-header-cell *matHeaderCellDef>Update</th>
+        <td mat-cell *matCellDef="let tolerance; let i = index">
+            <button mat-raised-button color="primary" (click)="updateTolerance(tolerance, i)"
+                [disabled]="!editMode">Update</button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let tolerance">
+            <button mat-raised-button color="primary" (click)="deleteTolerance(tolerance)"
+                [disabled]="!editMode">Delete</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsTolerances"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsTolerances;"></tr>
+</table>
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+</mat-paginator>
