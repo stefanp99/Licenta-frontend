@@ -28,6 +28,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { RegisterSuccessfulDialogComponent } from './register-successful-dialog/register-successful-dialog.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { DeviationsComponent } from './deviations/deviations.component';
@@ -79,6 +80,7 @@ import { HttpHeadersService } from './http-headers-service';
     MatAutocompleteModule,
     MatButtonToggleModule,
     MatDividerModule,
+    MatExpansionModule,
   ],
   providers: [HttpHeadersService],
   bootstrap: [AppComponent]

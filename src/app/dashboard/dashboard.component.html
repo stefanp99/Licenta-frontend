@@ -1,17 +1,18 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Hello, {{ userDetails.firstName }} {{ userDetails.lastName}}!</mat-card-title>
-        <mat-card-subtitle>
-            <ul>
-                <li><strong>Username:</strong> {{ userDetails.username }}</li>
-                <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
-            </ul>
-        </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="logout()">Logout</button>
-    </mat-card-actions>
-</mat-card>
+<mat-expansion-panel #panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <p>Hello, {{ userDetails.firstName }} {{ userDetails.lastName}}!</p>
+            <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+        </mat-panel-title>
+        <mat-panel-description>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ul>
+        <li><strong>Username:</strong> {{ userDetails.username }}</li>
+        <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
+    </ul>
+</mat-expansion-panel>
+
 <br /><br />
 <mat-tab-group>
     <mat-tab label="Deliveries"> <app-deliveries></app-deliveries> </mat-tab>
