@@ -35,6 +35,7 @@ import { ContractsComponent } from './contracts/contracts.component';
 import { TolerancesComponent } from './tolerances/tolerances.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { PlantsComponent } from './plants/plants.component';
+import { HttpHeadersService } from './http-headers-service';
 
 
 @NgModule({
@@ -79,7 +80,7 @@ import { PlantsComponent } from './plants/plants.component';
     MatButtonToggleModule,
     MatDividerModule,
   ],
-  providers: [],
+  providers: [HttpHeadersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

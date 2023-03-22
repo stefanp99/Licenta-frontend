@@ -10,6 +10,7 @@ import { environment } from "../../environments/environment";
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { HttpHeadersService } from '../http-headers-service';
 
 @Component({
   selector: 'app-deviations',
@@ -47,7 +48,7 @@ export class DeviationsComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer) {
+    private _liveAnnouncer: LiveAnnouncer, private httpHeadersService: HttpHeadersService) {
   }
 
   ngAfterViewInit() {
@@ -84,7 +85,7 @@ export class DeviationsComponent implements OnInit {
     }
     typeParam = typeParam.slice(0, -1);
     const httpParams: HttpParams = new HttpParams().set('type', typeParam);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Deviation[]>(this.deviationByTypeUrl, options).subscribe(
       response => {
         this.allDeviations = response;

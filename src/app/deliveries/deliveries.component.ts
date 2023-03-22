@@ -12,6 +12,7 @@ import { Delivery } from './delivery';
 import { Contract } from '../contracts/contract';
 import { MatPaginator } from '@angular/material/paginator';
 import { Plant } from '../plants/plant';
+import { HttpHeadersService } from '../http-headers-service';
 
 export interface Deviation {
   id: number;
@@ -63,7 +64,7 @@ export class DeliveriesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar) {
+    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService) {
   }
 
   ngAfterViewInit() {
@@ -99,7 +100,7 @@ export class DeliveriesComponent implements OnInit {
 
   getPlants() {
     const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Plant[]>(this.plantsUrl, options).subscribe(
       response => {
         this.plants = response;
@@ -114,7 +115,7 @@ export class DeliveriesComponent implements OnInit {
 
   getContracts(materialCode: string, plantId: string) {
     const httpParams: HttpParams = new HttpParams().set('materialCode', materialCode).set('plantId', plantId);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Contract[]>(this.contractsUrl, options).subscribe(
       response => {
         this.contracts = response;
@@ -129,7 +130,7 @@ export class DeliveriesComponent implements OnInit {
 
   getDeliveriesByStatus(selectedStatus: string) {
     const httpParams: HttpParams = new HttpParams().set('status', selectedStatus);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Delivery[]>(this.deliveriesByStatusUrl, options).subscribe(
       response => {
         this.orders = response;
@@ -144,7 +145,7 @@ export class DeliveriesComponent implements OnInit {
 
   dispatchDelivery(delivery: Delivery) {
     const httpParams: HttpParams = new HttpParams().set('id', delivery.id);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.put<Delivery>(this.dispatchUrl, null, options).subscribe(
       response => {
         this.getDeliveriesByStatus('undispatched');
@@ -171,7 +172,7 @@ export class DeliveriesComponent implements OnInit {
       const httpParams: HttpParams = new HttpParams()
         .set('id', delivery.id)
         .set('realQuantity', this.realQuantityFormGroup.value.realQuantity);
-      const options = { params: httpParams, headers: environment.headers };
+      const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
       this.http.put<DeliveryData>(this.deliverUrl, null, options).subscribe(
         response => {
           this.getDeliveriesByStatus('dispatched');
@@ -224,7 +225,7 @@ export class DeliveriesComponent implements OnInit {
         .set('expectedQuantity', firstFormValue.expectedQuantity)
         .set('expectedDeliveryDate', firstFormValue.expectedDeliveryDate)
         .set('contractId', this.clickedContract.id);
-      const options = { params: httpParams, headers: environment.headers };
+      const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
       this.http.post(this.addDeliveryUrl, null, options).subscribe(
         (response) => {
           this.dialog.closeAll();

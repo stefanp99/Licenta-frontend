@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpHeadersService } from '../http-headers-service';
 
 
 @Component({
@@ -59,7 +60,7 @@ export class ContractsComponent implements OnInit {
   @ViewChild('dialogDeleteContract') dialogDeleteContract: any;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar) {
+    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService) {
   }
 
   ngAfterViewInit() {
@@ -119,7 +120,7 @@ export class ContractsComponent implements OnInit {
       .set('plantId', this.getContractsFormGroup.value.plantId)
       .set('supplierId', this.getContractsFormGroup.value.supplierId)
       .set('materialCode', this.getContractsFormGroup.value.materialCode);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Contract[]>(this.getContractsUrl, options).subscribe(
       response => {
         this.allContracts = response;
@@ -139,7 +140,7 @@ export class ContractsComponent implements OnInit {
 
   getPlants() {
     const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Plant[]>(this.plantsUrl, options).subscribe(
       response => {
         this.plants = response;
@@ -157,7 +158,7 @@ export class ContractsComponent implements OnInit {
 
   getSuppliers() {
     const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Supplier[]>(this.suppliersUrl, options).subscribe(
       response => {
         this.suppliers = response;
@@ -189,7 +190,7 @@ export class ContractsComponent implements OnInit {
       .set('materialCode', this.addContractsFormGroup.value.materialCode)
       .set('pricePerUnit', this.addContractsFormGroup.value.pricePerUnit)
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.post<Contract>(this.addContractUrl, null, options).subscribe(
       response => {
         this.clearForms();
@@ -230,7 +231,7 @@ export class ContractsComponent implements OnInit {
       .set('materialCode', contract.materialCode)
       .set('pricePerUnit', contract.pricePerUnit);
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.put<Contract>(this.updateContractUrl, null, options).subscribe(
       response => {
         this.searchContracts();
@@ -246,7 +247,7 @@ export class ContractsComponent implements OnInit {
     const httpParams: HttpParams = new HttpParams()
       .set('id', contract.id);
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.delete<Contract>(this.deleteContractUrl, options).subscribe(
       response => {
         this.searchContracts();

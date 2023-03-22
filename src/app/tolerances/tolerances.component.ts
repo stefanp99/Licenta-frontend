@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpHeadersService } from '../http-headers-service';
 
 
 @Component({
@@ -62,7 +63,7 @@ export class TolerancesComponent implements OnInit {
   @ViewChild('dialogDeleteTolerance') dialogDeleteTolerance: any;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar) {
+    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService) {
   }
 
   ngAfterViewInit() {
@@ -125,7 +126,7 @@ export class TolerancesComponent implements OnInit {
       .set('plantId', this.getTolerancesFormGroup.value.plantId)
       .set('supplierId', this.getTolerancesFormGroup.value.supplierId)
       .set('materialCode', this.getTolerancesFormGroup.value.materialCode);
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Tolerance[]>(this.getTolerancesUrl, options).subscribe(
       response => {
         this.allTolerances = response;
@@ -152,7 +153,7 @@ export class TolerancesComponent implements OnInit {
 
   getPlants() {
     const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Plant[]>(this.plantsUrl, options).subscribe(
       response => {
         this.plants = response;
@@ -171,7 +172,7 @@ export class TolerancesComponent implements OnInit {
 
   getSuppliers() {
     const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<Supplier[]>(this.suppliersUrl, options).subscribe(
       response => {
         this.suppliers = response;
@@ -222,7 +223,7 @@ export class TolerancesComponent implements OnInit {
       .set('dayUpperLimit', this.addTolerancesFormGroup.value.dayUpperLimit)
       .set('dayLowerLimit', this.addTolerancesFormGroup.value.dayLowerLimit);
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.post<Tolerance>(this.addToleranceUrl, null, options).subscribe(
       response => {
         this.searchTolerances();
@@ -269,7 +270,7 @@ export class TolerancesComponent implements OnInit {
       .set('dayUpperLimit', tolerance.dayUpperLimit)
       .set('dayLowerLimit', tolerance.dayLowerLimit);
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.put<Tolerance>(this.updateToleranceUrl, null, options).subscribe(
       response => {
         this.searchTolerances();
@@ -285,7 +286,7 @@ export class TolerancesComponent implements OnInit {
     const httpParams: HttpParams = new HttpParams()
       .set('id', tolerance.id);
 
-    const options = { params: httpParams, headers: environment.headers };
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.delete<Tolerance>(this.deleteToleranceUrl, options).subscribe(
       response => {
         this.searchTolerances();

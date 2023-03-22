@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from "../../environments/environment";
+import { HttpHeadersService } from '../http-headers-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +14,10 @@ export class DashboardComponent implements OnInit {
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private loggedUserUrl = 'http://localhost:8080/users/logged-user-dto';
   userDetails: any = {};
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private httpHeadersService: HttpHeadersService) { }
 
   ngOnInit(): void {
-    let headers = environment.headers;
+    let headers = this.httpHeadersService.getHttpHeaders();//TODO: call a function to set authorization header everytime you get the headers
     this.http.get<any>(this.loggedUserUrl, { headers }).subscribe(
       response => {
         this.userDetails = response;
@@ -28,14 +29,14 @@ export class DashboardComponent implements OnInit {
   }
 
   logout() {
-    let headers = environment.headers;
+    let headers = this.httpHeadersService.getHttpHeaders();
     // Make API call to logout
-    this.http.post(this.logoutUrl, {}, { headers }).subscribe((respone) => {
-      localStorage.removeItem('token');
+    this.http.post(this.logoutUrl, null, { headers }).subscribe((respone) => {
+      localStorage.clear();
       this.router.navigate(['/authenticate']);
     },
       (error) => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         this.router.navigate(['/authenticate']);
       });
   }
