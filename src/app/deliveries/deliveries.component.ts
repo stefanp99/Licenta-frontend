@@ -14,6 +14,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Plant } from '../plants/plant';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
+import { DeviationsComponent } from '../deviations/deviations.component';
 
 export interface Deviation {
   id: number;
@@ -156,12 +157,12 @@ export class DeliveriesComponent implements OnInit {
         console.error(error);
       }
     );
-    this.openSnackBar('Delivery dispatched!', 'Close', 5000);
+    this.openSnackBar(this.translationService.getTranslation('deliveryDispatched'), this.translationService.getTranslation('close'), 5000);
   }
 
   openDialogDispatchDelivery() {
     const dialogRef = this.dialog.open(this.dialogDispatchDelivery, {
-      width: '500px',
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -186,7 +187,7 @@ export class DeliveriesComponent implements OnInit {
           console.error(error);
         }
       );
-      this.openSnackBar('Delivery delivered!', 'Close', 5000);
+      this.openSnackBar(this.translationService.getTranslation('deliveryDelivered'), this.translationService.getTranslation('close'), 5000);
     }
   }
 
@@ -211,7 +212,7 @@ export class DeliveriesComponent implements OnInit {
   openDialogAddDelivery() {
     this.getPlants();
     const dialogRef = this.dialog.open(this.dialogAddDeliveryTemplate, {
-      width: '500px',
+      width: '100%',
       data: this.firstFormGroup
     });
 

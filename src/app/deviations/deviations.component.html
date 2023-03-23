@@ -20,7 +20,14 @@
     </mat-form-field>
 </div>
 <table mat-table [dataSource]="dataSourceDeviations" matSort (matSortChange)="announceSortChange($event)"
-    class="mat-elevation-z8">
+    class="mat-elevation-z8" matSortActive="creationDate" matSortDirection="desc">
+
+    <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by creation date">
+            {{this.translationService.getTranslation('creationDate')}}
+        </th>
+        <td mat-cell *matCellDef="let deviation"> {{deviation.creationDate | date:'medium'}} </td>
+    </ng-container>
 
     <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by type">

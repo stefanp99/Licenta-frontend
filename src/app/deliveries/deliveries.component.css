@@ -26,3 +26,7 @@ mat-form-field {
 .mat-mdc-row:hover .mat-mdc-cell {
     border-color: currentColor;
 }
+
+.selected {
+    background-color: #0a0a22;
+}

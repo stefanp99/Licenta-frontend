@@ -171,7 +171,7 @@
     </mat-form-field>
 </div>
 
-<mat-button-toggle color="primary" (click)="changeEditMode()">
+<mat-button-toggle color="primary" (click)="changeEditMode()" class="editButton">
     <span class="material-symbols-outlined">
         edit
     </span>
@@ -227,7 +227,7 @@
 
     <ng-container matColumnDef="qtyUpperLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Upper Limit">
-            {{this.translationService.getTranslation('qtyUpperLimit')}}
+            {{this.translationService.getTranslation('qtyUpperLimit')}}(%)
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyUpperLimit}}</td>
@@ -243,7 +243,7 @@
 
     <ng-container matColumnDef="qtyLowerLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Lower Limit">
-            {{this.translationService.getTranslation('qtyLowerLimit')}}
+            {{this.translationService.getTranslation('qtyLowerLimit')}}(%)
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyLowerLimit}}</td>
@@ -259,7 +259,7 @@
 
     <ng-container matColumnDef="dayUpperLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Upper Limit">
-            {{this.translationService.getTranslation('dayUpperLimit')}}
+            {{this.translationService.getTranslation('dayUpperLimit')}}({{this.translationService.getTranslation('days')}})
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.dayUpperLimit}}</td>
@@ -275,7 +275,7 @@
 
     <ng-container matColumnDef="dayLowerLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Lower Limit">
-            {{this.translationService.getTranslation('dayLowerLimit')}}
+            {{this.translationService.getTranslation('dayLowerLimit')}}({{this.translationService.getTranslation('days')}})
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.dayLowerLimit}}</td>

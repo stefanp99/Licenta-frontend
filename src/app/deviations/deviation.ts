@@ -5,5 +5,6 @@ export interface Deviation {
     type: string,
     delivery: Delivery,
     quantityDiff: number,
-    timeDiff: number
+    timeDiff: number,
+    creationDate: Date
 }

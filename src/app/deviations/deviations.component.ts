@@ -20,7 +20,7 @@ import { TranslationService } from '../language-changer/translation-service';
 })
 export class DeviationsComponent implements OnInit {
   deviationTypes = [{ key: 1, value: 'qtyMinus' }, { key: 2, value: 'qtyPlus' }, { key: 3, value: 'dayMinus' }, { key: 4, value: 'dayPlus' }];
-  displayedColumnsDeviations: string[] = ['type', 'quantityDiff', 'timeDiff', 'supplierId', 'materialCode', 'pricePerUnit', 'plantId'];
+  displayedColumnsDeviations: string[] = ['creationDate', 'type', 'quantityDiff', 'timeDiff', 'supplierId', 'materialCode', 'pricePerUnit', 'plantId'];
   private deviationByTypeUrl = 'http://localhost:8080/deviations/by-type';
   allDeviations: Deviation[];
   dataSourceDeviations = new MatTableDataSource([]);

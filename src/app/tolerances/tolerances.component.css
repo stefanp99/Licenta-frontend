@@ -11,6 +11,10 @@
     margin-right: auto;
 }
 
+.editButton {
+    float: right;
+}
+
 .searchFormButton {
     margin: 10px;
 }

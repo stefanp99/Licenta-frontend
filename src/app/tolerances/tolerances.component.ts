@@ -228,7 +228,7 @@ export class TolerancesComponent implements OnInit {
     this.http.post<Tolerance>(this.addToleranceUrl, null, options).subscribe(
       response => {
         this.searchTolerances();
-        this.openSnackBar('Tolerance added', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('toleranceAdded'), this.translationService.getTranslation('close'), 5000);
         this.clearForms();
       },
       error => {
@@ -275,7 +275,7 @@ export class TolerancesComponent implements OnInit {
     this.http.put<Tolerance>(this.updateToleranceUrl, null, options).subscribe(
       response => {
         this.searchTolerances();
-        this.openSnackBar('Tolerance updated', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('toleranceUpdated'), this.translationService.getTranslation('close'), 5000);
       },
       error => {
         console.error(error);
@@ -291,7 +291,7 @@ export class TolerancesComponent implements OnInit {
     this.http.delete<Tolerance>(this.deleteToleranceUrl, options).subscribe(
       response => {
         this.searchTolerances();
-        this.openSnackBar('Tolerance deleted', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('toleranceDeleted'), this.translationService.getTranslation('close'), 5000);
       },
       error => {
         console.error(error);

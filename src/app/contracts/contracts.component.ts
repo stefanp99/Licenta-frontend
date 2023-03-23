@@ -196,7 +196,7 @@ export class ContractsComponent implements OnInit {
       response => {
         this.clearForms();
         this.searchContracts();
-        this.openSnackBar('Contract added', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('contractAdded'), this.translationService.getTranslation('close'), 5000);
       },
       error => {
         console.error(error);
@@ -236,7 +236,7 @@ export class ContractsComponent implements OnInit {
     this.http.put<Contract>(this.updateContractUrl, null, options).subscribe(
       response => {
         this.searchContracts();
-        this.openSnackBar('Contract updated', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('contractUpdated'), this.translationService.getTranslation('close'), 5000);
       },
       error => {
         console.error(error);
@@ -252,7 +252,7 @@ export class ContractsComponent implements OnInit {
     this.http.delete<Contract>(this.deleteContractUrl, options).subscribe(
       response => {
         this.searchContracts();
-        this.openSnackBar('Contract deleted', 'Close', 5000);
+        this.openSnackBar(this.translationService.getTranslation('contractDeleted'), this.translationService.getTranslation('close'), 5000);
       },
       error => {
         console.error(error);
