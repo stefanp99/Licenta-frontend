@@ -13,6 +13,7 @@ import { Contract } from '../contracts/contract';
 import { MatPaginator } from '@angular/material/paginator';
 import { Plant } from '../plants/plant';
 import { HttpHeadersService } from '../http-headers-service';
+import { TranslationService } from '../language-changer/translation-service';
 
 export interface Deviation {
   id: number;
@@ -64,7 +65,7 @@ export class DeliveriesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService) {
+    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService, public translationService: TranslationService) {
   }
 
   ngAfterViewInit() {

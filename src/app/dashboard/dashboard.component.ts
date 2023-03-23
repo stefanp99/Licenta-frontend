@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from "../../environments/environment";
 import { HttpHeadersService } from '../http-headers-service';
+import { TranslationService } from '../language-changer/translation-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ export class DashboardComponent implements OnInit {
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private loggedUserUrl = 'http://localhost:8080/users/logged-user-dto';
   userDetails: any = {};
-  constructor(private http: HttpClient, private router: Router, private httpHeadersService: HttpHeadersService) { }
+  constructor(private http: HttpClient, private router: Router, private httpHeadersService: HttpHeadersService, public translationService: TranslationService) { }
 
   ngOnInit(): void {
     let headers = this.httpHeadersService.getHttpHeaders();//TODO: call a function to set authorization header everytime you get the headers

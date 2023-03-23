@@ -11,6 +11,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { HttpHeadersService } from '../http-headers-service';
+import { TranslationService } from '../language-changer/translation-service';
 
 @Component({
   selector: 'app-deviations',
@@ -48,7 +49,7 @@ export class DeviationsComponent implements OnInit {
 
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private httpHeadersService: HttpHeadersService) {
+    private _liveAnnouncer: LiveAnnouncer, private httpHeadersService: HttpHeadersService, public translationService: TranslationService) {
   }
 
   ngAfterViewInit() {

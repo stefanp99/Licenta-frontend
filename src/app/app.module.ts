@@ -37,6 +37,7 @@ import { TolerancesComponent } from './tolerances/tolerances.component';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { PlantsComponent } from './plants/plants.component';
 import { HttpHeadersService } from './http-headers-service';
+import { LanguageChangerComponent } from './language-changer/language-changer.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { HttpHeadersService } from './http-headers-service';
     ContractsComponent,
     TolerancesComponent,
     SuppliersComponent,
-    PlantsComponent
+    PlantsComponent,
+    LanguageChangerComponent
   ],
   imports: [
     BrowserModule,

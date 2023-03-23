@@ -1,95 +1,101 @@
 <ng-template #dialogDispatchDelivery>
-    <h1 mat-dialog-title>Dispatch Delivery</h1>
+    <h1 mat-dialog-title>{{this.translationService.getTranslation('dispatchDeliveryTitle')}}</h1>
     <div mat-dialog-content>
-        Are you sure you want to dispatch delivery?
+        {{this.translationService.getTranslation('dispatchDeliveryQuestion')}}
     </div>
     <div mat-dialog-actions>
-        <button mat-raised-button color="warn" mat-dialog-close>No</button>
+        <button mat-raised-button color="warn"
+            mat-dialog-close>{{this.translationService.getTranslation('no')}}</button>
         <button mat-raised-button color="primary" mat-dialog-close
-            (click)="dispatchDelivery(clickedDelivery)">Yes</button>
+            (click)="dispatchDelivery(clickedDelivery)">{{this.translationService.getTranslation('yes')}}</button>
     </div>
 </ng-template>
 
 <ng-template #dialogDeliverDelivery>
-    <h1 mat-dialog-title>Deliver Delivery</h1>
+    <h1 mat-dialog-title>{{this.translationService.getTranslation('deliverDeliveryTitle')}}</h1>
     <div mat-dialog-actions>
         <form [formGroup]="realQuantityFormGroup">
             <mat-form-field appearance="outline">
                 <mat-label>
-                    Real Quantity Delivered
+                    {{this.translationService.getTranslation('realQuantityLabel')}}
                     <mat-icon class="icon">local_shipping</mat-icon>
                 </mat-label>
-                <input matInput type="number" formControlName="realQuantity" placeholder="Real Quantity" min="1"
-                    required>
+                <input matInput type="number" formControlName="realQuantity"
+                    placeholder="{{this.translationService.getTranslation('realQuantityLabel')}}" min="1" required>
             </mat-form-field>
-            <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="warn"
+                mat-dialog-close>{{this.translationService.getTranslation('cancel')}}</button>
             <button mat-raised-button color="primary" mat-dialog-close
-                (click)="deliverDelivery(clickedDelivery)">Submit</button>
+                (click)="deliverDelivery(clickedDelivery)">{{this.translationService.getTranslation('submit')}}</button>
         </form>
     </div>
 </ng-template>
 
 <ng-template #dialogDeviationCreated>
-    <h1 mat-dialog-title>Deviation Detected</h1>
+    <h1 mat-dialog-title>{{this.translationService.getTranslation('deviationDetectedTitle')}}</h1>
     <div mat-dialog-actions>
-        <button mat-raised-button color="warn" mat-dialog-close>Continue</button>
+        <button mat-raised-button color="warn"
+            mat-dialog-close>{{this.translationService.getTranslation('continue')}}</button>
     </div>
 </ng-template>
 
 
 <ng-template #dialogAddDeliveryTemplate let-formData>
-    <h2 mat-dialog-title>Add delivery</h2>
+    <h2 mat-dialog-title>{{this.translationService.getTranslation('addDelivery')}}</h2>
     <mat-dialog-content>
         <mat-stepper [linear]="true" #stepper>
-            <mat-step [stepControl]="firstFormGroup" label="Step one">
+            <mat-step [stepControl]="firstFormGroup" label="{{this.translationService.getTranslation('stepOne')}}">
                 <form [formGroup]="firstFormGroup">
                     <mat-form-field appearance="outline">
                         <mat-label>
-                            Material Code
+                            {{this.translationService.getTranslation('materialCode')}}
                             <mat-icon class="icon">confirmation_number</mat-icon>
                         </mat-label>
-                        <input matInput type="text" formControlName="materialCode" placeholder="Material Code" required>
+                        <input matInput type="text" formControlName="materialCode"
+                            placeholder="{{this.translationService.getTranslation('materialCode')}}" required>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>
-                            Expected Quantity
+                            {{this.translationService.getTranslation('expectedQuantity')}}
                             <mat-icon class="icon">local_shipping</mat-icon>
                         </mat-label>
                         <input matInput type="number" formControlName="expectedQuantity" min="1"
-                            placeholder="Expected Quantity" required>
+                            placeholder="{{this.translationService.getTranslation('expectedQuantity')}}" required>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label>
-                            Expected Delivery Date
+                            {{this.translationService.getTranslation('expectedDeliveryDate')}}
                             <mat-icon class="icon">date_range</mat-icon>
                         </mat-label>
                         <input matInput type="datetime-local" formControlName="expectedDeliveryDate"
-                            placeholder="Expected Delivery Date" required min="{{ getCurrentDateTime() }}">
+                            placeholder="{{this.translationService.getTranslation('expectedDeliveryDate')}}" required
+                            min="{{ getCurrentDateTime() }}">
                     </mat-form-field>
                     <div>
-                        <button mat-raised-button color="primary" matStepperNext>Next</button>
+                        <button mat-raised-button color="primary"
+                            matStepperNext>{{this.translationService.getTranslation('next')}}</button>
                     </div>
                 </form>
             </mat-step>
-            <mat-step label="Step two">
+            <mat-step label="{{this.translationService.getTranslation('stepTwo')}}">
                 <table mat-table [dataSource]="dataSourcePlants" class="mat-elevation-z8">
                     <ng-container matColumnDef="id">
-                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('id')}}</th>
                         <td mat-cell *matCellDef="let plant">{{plant.id}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="segment">
-                        <th mat-header-cell *matHeaderCellDef>Segment</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('segment')}}</th>
                         <td mat-cell *matCellDef="let plant">{{plant.segment}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="country">
-                        <th mat-header-cell *matHeaderCellDef>Country</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('country')}}</th>
                         <td mat-cell *matCellDef="let plant">{{plant.country}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="city">
-                        <th mat-header-cell *matHeaderCellDef>City</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('city')}}</th>
                         <td mat-cell *matCellDef="let plant">{{plant.city}}</td>
                     </ng-container>
 
@@ -100,24 +106,26 @@
 
                 <div *ngIf="clickedPlant!=null">
                     <h3>
-                        Selected plant: {{clickedPlant.id}}
+                        {{this.translationService.getTranslation('selectedPlant')}}: {{clickedPlant.id}}
                     </h3>
                     <button mat-raised-button color="primary"
                         (click)="getContracts(firstFormGroup.value.materialCode, clickedPlant.id)"
-                        matStepperNext>Next</button>
+                        matStepperNext>{{this.translationService.getTranslation('next')}}</button>
                 </div>
             </mat-step>
 
 
-            <mat-step label="Step three">
+            <mat-step label="{{this.translationService.getTranslation('stepThree')}}">
                 <table mat-table [dataSource]="dataSourceContracts" class="mat-elevation-z8">
                     <ng-container matColumnDef="supplierId">
-                        <th mat-header-cell *matHeaderCellDef>Supplier ID</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('supplierId')}}
+                        </th>
                         <td mat-cell *matCellDef="let contract">{{contract.supplier.id}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="pricePerUnit">
-                        <th mat-header-cell *matHeaderCellDef>Price per Unit</th>
+                        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('pricePerUnit')}}
+                        </th>
                         <td mat-cell *matCellDef="let contract">{{contract.pricePerUnit}}</td>
                     </ng-container>
 
@@ -129,40 +137,41 @@
 
                 <div *ngIf="clickedContract!=null">
                     <h3>
-                        Selected supplier: {{clickedContract.supplier.id}}
+                        {{this.translationService.getTranslation('selectedSupplier')}}: {{clickedContract.supplier.id}}
                     </h3>
-                    <button mat-raised-button color="primary" matStepperNext (click)="submitForm()">Add
-                        Delivery</button>
+                    <button mat-raised-button color="primary" matStepperNext
+                        (click)="submitForm()">{{this.translationService.getTranslation('addDelivery')}}</button>
                 </div>
             </mat-step>
         </mat-stepper>
     </mat-dialog-content>
     <mat-dialog-actions>
-        <button mat-raised-button mat-dialog-close color="warn">Cancel</button>
+        <button mat-raised-button mat-dialog-close
+            color="warn">{{this.translationService.getTranslation('cancel')}}</button>
     </mat-dialog-actions>
 </ng-template>
 
 <br />
 <mat-divider></mat-divider>
 <br />
-<button mat-raised-button color="primary" (click)="openDialogAddDelivery()" class="addDeliveryButton">Add
-    Delivery</button>
+<button mat-raised-button color="primary" (click)="openDialogAddDelivery()"
+    class="addDeliveryButton">{{this.translationService.getTranslation('addDelivery')}}</button>
 <br />
 <mat-divider></mat-divider>
 <br />
 <div class="filters">
     <mat-form-field appearance="outline">
-        <mat-label>Delivery status</mat-label>
+        <mat-label>{{this.translationService.getTranslation('deliveryStatusLabel')}}</mat-label>
         <select matNativeControl (change)="getDeliveriesByStatus($event.target.value)">
-            <option value="undispatched">Undispatched</option>
-            <option value="dispatched">Dispatched</option>
-            <option value="delivered">Delivered</option>
-            <option value="all">All</option>
+            <option value="undispatched">{{this.translationService.getTranslation('undispatched')}}</option>
+            <option value="dispatched">{{this.translationService.getTranslation('dispatched')}}</option>
+            <option value="delivered">{{this.translationService.getTranslation('delivered')}}</option>
+            <option value="all">{{this.translationService.getTranslation('all')}}</option>
         </select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-        <mat-label>Filter</mat-label>
+        <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
         <input matInput (keyup)="applyFilterDeliveries($event)" placeholder="Ex. ium" #input>
     </mat-form-field>
 </div>
@@ -171,74 +180,74 @@
 
     <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
-            Status
+            {{this.translationService.getTranslation('status')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.status}} </td>
     </ng-container>
 
     <ng-container matColumnDef="dispatchDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dispatch date">
-            Dispatch Date
+            {{this.translationService.getTranslation('dispatchDate')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.dispatchDate | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="deliveryDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by delivery date">
-            Delivery Date
+            {{this.translationService.getTranslation('deliveryDate')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.deliveryDate | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="supplierId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
-            Supplier ID
+            {{this.translationService.getTranslation('supplierId')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.contract.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="materialCode">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
-            Material Code
+            {{this.translationService.getTranslation('materialCode')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.contract.materialCode}} </td>
     </ng-container>
 
     <ng-container matColumnDef="pricePerUnit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by price per unit">
-            Price per Unit
+            {{this.translationService.getTranslation('pricePerUnit')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.contract.pricePerUnit}} </td>
     </ng-container>
 
     <ng-container matColumnDef="plantId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
-            Plant ID
+            {{this.translationService.getTranslation('plantId')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.contract.plantId}} </td>
     </ng-container>
 
     <ng-container matColumnDef="expectedQuantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected quantity">
-            Expected Quantity
+            {{this.translationService.getTranslation('expectedQuantity')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.expectedQuantity}} </td>
     </ng-container>
 
     <ng-container matColumnDef="expectedDeliveryDate">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected delivery date">
-            Expected Delivery Date
+            {{this.translationService.getTranslation('expectedDeliveryDate')}}
         </th>
         <td mat-cell *matCellDef="let delivery"> {{delivery.expectedDeliveryDate | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="dispatchDelivery">
-        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('action')}}</th>
         <td mat-cell *matCellDef="let delivery">
             <button *ngIf="delivery.status === 'undispatched'" mat-raised-button color="primary"
-                (click)="clickedDelivery=delivery; openDialogDispatchDelivery()">Dispatch</button>
+                (click)="clickedDelivery=delivery; openDialogDispatchDelivery()">{{this.translationService.getTranslation('dispatch')}}</button>
             <button *ngIf="delivery.status === 'dispatched'" mat-raised-button color="primary"
-                (click)="clickedDelivery=delivery; openDialogDeliverDelivery()">Deliver</button>
+                (click)="clickedDelivery=delivery; openDialogDeliverDelivery()">{{this.translationService.getTranslation('deliver')}}</button>
         </td>
     </ng-container>
 

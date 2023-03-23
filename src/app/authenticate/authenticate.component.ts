@@ -1,9 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterSuccessfulDialogComponent } from '../register-successful-dialog/register-successful-dialog.component';
+import { TranslationService } from 'src/app/language-changer/translation-service';
 
 @Component({
   selector: 'app-authenticate',
@@ -17,11 +18,13 @@ export class AuthenticateComponent implements OnInit {
   resetPasswordForm: FormGroup;
   invalidPassword: boolean = false;
   successfulRegistration: boolean;
+  language = 'ro';
+  localStorage = window.localStorage;
 
   private registrationUrl = 'http://localhost:8080/auth/register';
   private authenticateUrl = 'http://localhost:8080/auth/authenticate';
   private resetPasswordUrl = 'http://localhost:8080/auth/email-reset-password';
-  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog, public translationService: TranslationService) { }
 
   ngOnInit() {
     this.registrationForm = new FormGroup({

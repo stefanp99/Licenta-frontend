@@ -17,6 +17,7 @@ import { map, startWith } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpHeadersService } from '../http-headers-service';
+import { TranslationService } from '../language-changer/translation-service';
 
 
 @Component({
@@ -63,7 +64,7 @@ export class TolerancesComponent implements OnInit {
   @ViewChild('dialogDeleteTolerance') dialogDeleteTolerance: any;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService) {
+    private _liveAnnouncer: LiveAnnouncer, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService, public translationService: TranslationService) {
   }
 
   ngAfterViewInit() {

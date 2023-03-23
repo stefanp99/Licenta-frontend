@@ -2,13 +2,14 @@
     <form [formGroup]="addTolerancesFormGroup">
         <mat-form-field appearance="outline">
             <mat-label>
-                Supplier ID
+                {{this.translationService.getTranslation('supplierId')}}
                 <span class="material-symbols-outlined">
                     handshake
                 </span>
             </mat-label>
-            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="outline"
-                [formControl]="myControlSuppliersAdd" [matAutocomplete]="autoSuppliers" required>
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('supplierId')}}"
+                formControlName="supplierId" appearance="outline" [formControl]="myControlSuppliersAdd"
+                [matAutocomplete]="autoSuppliers" required>
             <mat-autocomplete #autoSuppliers="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
                     {{option}}
@@ -17,13 +18,14 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-            <mat-label>Plant ID
+            <mat-label>{{this.translationService.getTranslation('plantId')}}
                 <span class="material-symbols-outlined">
                     factory
                 </span>
             </mat-label>
-            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="outline"
-                [formControl]="myControlPlantsAdd" [matAutocomplete]="autoPlants">
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('plantId')}}"
+                formControlName="plantId" appearance="outline" [formControl]="myControlPlantsAdd"
+                [matAutocomplete]="autoPlants">
             <mat-autocomplete #autoPlants="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
                     {{option}}
@@ -33,76 +35,83 @@
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Material Code
+                {{this.translationService.getTranslation('materialCode')}}
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
-            <input matInput type="text" formControlName="materialCode" placeholder="Material Code">
+            <input matInput type="text" formControlName="materialCode"
+                placeholder="{{this.translationService.getTranslation('materialCode')}}">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Qty Upper Limit
+                {{this.translationService.getTranslation('qtyUpperLimit')}}
                 <span class="material-symbols-outlined">
                     production_quantity_limits
                 </span>
             </mat-label>
-            <input matInput type="number" min="0" formControlName="qtyUpperLimit" placeholder="Qty Upper Limit">
+            <input matInput type="number" min="0"
+                formControlName="{{this.translationService.getTranslation('qtyUpperLimit')}}"
+                placeholder="Qty Upper Limit">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Qty Lower Limit
+                {{this.translationService.getTranslation('qtyLowerLimit')}}
                 <span class="material-symbols-outlined">
                     production_quantity_limits
                 </span>
             </mat-label>
-            <input matInput type="number" min="0" formControlName="qtyLowerLimit" placeholder="Qty Lower Limit">
+            <input matInput type="number" min="0" formControlName="qtyLowerLimit"
+                placeholder="{{this.translationService.getTranslation('qtyLowerLimit')}}">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Day Upper Limit
+                {{this.translationService.getTranslation('dayUpperLimit')}}
                 <span class="material-symbols-outlined">
                     today
                 </span>
             </mat-label>
-            <input matInput type="number" min="0" formControlName="dayUpperLimit" placeholder="Day Upper Limit">
+            <input matInput type="number" min="0" formControlName="dayUpperLimit"
+                placeholder="{{this.translationService.getTranslation('dayUpperLimit')}}">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Day Lower Limit
+                {{this.translationService.getTranslation('dayLowerLimit')}}
                 <span class="material-symbols-outlined">
                     today
                 </span>
             </mat-label>
-            <input matInput type="number" min="0" formControlName="dayLowerLimit" placeholder="Day Lower Limit">
+            <input matInput type="number" min="0" formControlName="dayLowerLimit"
+                placeholder="{{this.translationService.getTranslation('dayLowerLimit')}}">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="addTolerance()" class="searchFormButton" mat-dialog-close>Add
-            Tolerance</button>
+        <button mat-raised-button color="primary" (click)="addTolerance()" class="searchFormButton"
+            mat-dialog-close>{{this.translationService.getTranslation('addTolerance')}}</button>
         <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton"
-            mat-dialog-close>Cancel</button>
+            mat-dialog-close>{{this.translationService.getTranslation('cancel')}}</button>
     </form>
 </ng-template>
 
 <ng-template #dialogDeleteTolerance>
-    <h1 mat-dialog-title>Delete Tolerance</h1>
+    <h1 mat-dialog-title>{{this.translationService.getTranslation('deleteTolerance')}}</h1>
     <div mat-dialog-content>
-        Are you sure you want to delete tolerance?
+        {{this.translationService.getTranslation('deleteToleranceDialog')}}
     </div>
     <div mat-dialog-actions>
-        <button mat-raised-button color="warn" mat-dialog-close>No</button>
+        <button mat-raised-button color="warn"
+            mat-dialog-close>{{this.translationService.getTranslation('no')}}</button>
         <button mat-raised-button color="primary" mat-dialog-close
-            (click)="deleteTolerance(clickedTolerance)">Yes</button>
+            (click)="deleteTolerance(clickedTolerance)">{{this.translationService.getTranslation('yes')}}</button>
     </div>
 </ng-template>
 
 <br />
 <mat-divider></mat-divider>
 <br />
-<button mat-raised-button color="primary" (click)="openDialogAddTolerance()" class="addToleranceFormButton">Add
-    Tolerance</button>
+<button mat-raised-button color="primary" (click)="openDialogAddTolerance()"
+    class="addToleranceFormButton">{{this.translationService.getTranslation('addTolerance')}}</button>
 <br />
 <mat-divider></mat-divider>
 <br />
@@ -111,13 +120,14 @@
     <form [formGroup]="getTolerancesFormGroup">
         <mat-form-field appearance="outline">
             <mat-label>
-                Supplier ID
+                {{this.translationService.getTranslation('supplierId')}}
                 <span class="material-symbols-outlined">
                     handshake
                 </span>
             </mat-label>
-            <input matInput type="text" placeholder="Supplier ID" formControlName="supplierId" appearance="outline"
-                [formControl]="myControlSuppliers" [matAutocomplete]="autoSuppliers">
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('supplierId')}}"
+                formControlName="supplierId" appearance="outline" [formControl]="myControlSuppliers"
+                [matAutocomplete]="autoSuppliers">
             <mat-autocomplete #autoSuppliers="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
                     {{option}}
@@ -126,13 +136,14 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-            <mat-label>Plant ID
+            <mat-label>{{this.translationService.getTranslation('plantId')}}
                 <span class="material-symbols-outlined">
                     factory
                 </span>
             </mat-label>
-            <input matInput type="text" placeholder="Plant ID" formControlName="plantId" appearance="outline"
-                [formControl]="myControlPlants" [matAutocomplete]="autoPlants">
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('plantId')}}"
+                formControlName="plantId" appearance="outline" [formControl]="myControlPlants"
+                [matAutocomplete]="autoPlants">
             <mat-autocomplete #autoPlants="matAutocomplete">
                 <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
                     {{option}}
@@ -142,18 +153,20 @@
 
         <mat-form-field appearance="outline">
             <mat-label>
-                Material Code
+                {{this.translationService.getTranslation('materialCode')}}
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
-            <input matInput type="text" formControlName="materialCode" placeholder="Material Code">
+            <input matInput type="text" formControlName="materialCode"
+                placeholder="{{this.translationService.getTranslation('materialCode')}}">
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="searchTolerances()" class="searchFormButton">Search
-            Tolerance</button>
-        <button mat-raised-button color="warn" (click)="clearForms()" class="searchFormButton">Reset Search</button>
+        <button mat-raised-button color="primary" (click)="searchTolerances()"
+            class="searchFormButton">{{this.translationService.getTranslation('searchTolerance')}}</button>
+        <button mat-raised-button color="warn" (click)="clearForms()"
+            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
     </form>
     <br />
     <mat-form-field appearance="outline">
-        <mat-label>Filter</mat-label>
+        <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
         <input matInput (keyup)="applyFilterTolerances($event)" placeholder="Ex. ium" #input>
     </mat-form-field>
 </div>
@@ -168,21 +181,21 @@
 
     <ng-container matColumnDef="supplierId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
-            Supplier ID
+            {{this.translationService.getTranslation('supplierId')}}
         </th>
         <td mat-cell *matCellDef="let tolerance"> {{tolerance.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="supplierName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier name">
-            Supplier Name
+            {{this.translationService.getTranslation('supplierName')}}
         </th>
         <td mat-cell *matCellDef="let tolerance"> {{tolerance.supplier.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="materialCode">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
-            Material Code
+            {{this.translationService.getTranslation('materialCode')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.materialCode}}</td>
@@ -198,7 +211,7 @@
 
     <ng-container matColumnDef="plantId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
-            Plant ID
+            {{this.translationService.getTranslation('plantId')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.plantId}}</td>
@@ -214,7 +227,7 @@
 
     <ng-container matColumnDef="qtyUpperLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Upper Limit">
-            Qty Upper Limit
+            {{this.translationService.getTranslation('qtyUpperLimit')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyUpperLimit}}</td>
@@ -230,7 +243,7 @@
 
     <ng-container matColumnDef="qtyLowerLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Lower Limit">
-            Qty Lower Limit
+            {{this.translationService.getTranslation('qtyLowerLimit')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.qtyLowerLimit}}</td>
@@ -246,7 +259,7 @@
 
     <ng-container matColumnDef="dayUpperLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Upper Limit">
-            Day Upper Limit
+            {{this.translationService.getTranslation('dayUpperLimit')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.dayUpperLimit}}</td>
@@ -262,7 +275,7 @@
 
     <ng-container matColumnDef="dayLowerLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Day Lower Limit">
-            Day Lower Limit
+            {{this.translationService.getTranslation('dayLowerLimit')}}
         </th>
         <ng-container *ngIf="editMode === false">
             <td mat-cell *matCellDef="let tolerance">{{tolerance.dayLowerLimit}}</td>
@@ -277,18 +290,18 @@
     </ng-container>
 
     <ng-container matColumnDef="update">
-        <th mat-header-cell *matHeaderCellDef>Update</th>
+        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('update')}}</th>
         <td mat-cell *matCellDef="let tolerance; let i = index">
             <button mat-raised-button color="primary" (click)="updateTolerance(tolerance, i)"
-                [disabled]="!editMode">Update</button>
+                [disabled]="!editMode">{{this.translationService.getTranslation('update')}}</button>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('delete')}}</th>
         <td mat-cell *matCellDef="let tolerance">
             <button mat-raised-button color="primary" (click)="openDialogDeleteTolerance(tolerance)"
-                [disabled]="!editMode">Delete</button>
+                [disabled]="!editMode">{{this.translationService.getTranslation('delete')}}</button>
         </td>
     </ng-container>
 

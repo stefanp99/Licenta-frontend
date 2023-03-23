@@ -1,0 +1,13 @@
+<mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="language"
+    (click)="localStorage.setItem('language', language);">
+    <mat-button-toggle value="en">
+        <button mat-icon-button>
+            <mat-icon svgIcon="icon_us"></mat-icon>
+        </button>
+    </mat-button-toggle>
+    <mat-button-toggle value="ro">
+        <button mat-icon-button>
+            <mat-icon svgIcon="icon_ro"></mat-icon>
+        </button>
+    </mat-button-toggle>
+</mat-button-toggle-group>

@@ -1,22 +1,31 @@
+<app-language-changer></app-language-changer>
 <mat-expansion-panel #panel>
     <mat-expansion-panel-header>
         <mat-panel-title>
-            <p>Hello, {{ userDetails.firstName }} {{ userDetails.lastName}}!</p>
-            <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+            <p>{{this.translationService.getTranslation('greetingsLabel')}}, {{ userDetails.firstName }} {{
+                userDetails.lastName}}!</p>
+            <button mat-raised-button color="primary"
+                (click)="logout()">{{this.translationService.getTranslation('logoutButton')}}</button>
         </mat-panel-title>
         <mat-panel-description>
         </mat-panel-description>
     </mat-expansion-panel-header>
     <ul>
-        <li><strong>Username:</strong> {{ userDetails.username }}</li>
-        <li><strong>Email Address:</strong> {{ userDetails.emailAddress }}</li>
+        <li><strong>{{this.translationService.getTranslation('loginUsernameLabel')}}:</strong> {{ userDetails.username
+            }}</li>
+        <li><strong>{{this.translationService.getTranslation('emailLabel')}}:</strong> {{ userDetails.emailAddress }}
+        </li>
     </ul>
 </mat-expansion-panel>
 
 <br /><br />
 <mat-tab-group>
-    <mat-tab label="Deliveries"> <app-deliveries></app-deliveries> </mat-tab>
-    <mat-tab label="Deviations"> <app-deviations></app-deviations> </mat-tab>
-    <mat-tab label="Tolerances"> <app-tolerances></app-tolerances> </mat-tab>
-    <mat-tab label="Contracts"> <app-contracts></app-contracts> </mat-tab>
+    <mat-tab label="{{this.translationService.getTranslation('deliveriesLabel')}}"> <app-deliveries></app-deliveries>
+    </mat-tab>
+    <mat-tab label="{{this.translationService.getTranslation('deviationsLabel')}}"> <app-deviations></app-deviations>
+    </mat-tab>
+    <mat-tab label="{{this.translationService.getTranslation('tolerancesLabel')}}"> <app-tolerances></app-tolerances>
+    </mat-tab>
+    <mat-tab label="{{this.translationService.getTranslation('contractsLabel')}}"> <app-contracts></app-contracts>
+    </mat-tab>
 </mat-tab-group>
