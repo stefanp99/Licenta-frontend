@@ -36,7 +36,7 @@ export interface DeliveryData {
 })
 export class DeliveriesComponent implements OnInit {
   displayedColumnsDeliveries: string[] = ['status', 'dispatchDate', 'deliveryDate', 'supplierId',
-    'materialCode', 'pricePerUnit', 'plantId', 'expectedQuantity', 'expectedDeliveryDate', 'dispatchDelivery'];
+    'materialCode', 'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'expectedDeliveryDate', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
   private deliveriesByStatusUrl = 'http://localhost:8080/deliveries/deliveries-by-status';
@@ -179,7 +179,7 @@ export class DeliveriesComponent implements OnInit {
         response => {
           this.getDeliveriesByStatus('dispatched');
           this.clickedDelivery = null;
-          if (response.deviations != null) {
+          if (response.deviations != null) {//TODO: bug here response.deviations is always not null
             this.openDialogDeviationCreated();
           }
         },

@@ -45,7 +45,7 @@
 
     <ng-container matColumnDef="timeDiff">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time difference">
-            {{this.translationService.getTranslation('timeDifference')}}(days)
+            {{this.translationService.getTranslation('timeDifference')}}({{this.translationService.getTranslation('days')}})
         </th>
         <td mat-cell *matCellDef="let deviation"> {{deviation.timeDiff}} </td>
     </ng-container>

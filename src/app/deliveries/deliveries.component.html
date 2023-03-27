@@ -225,8 +225,16 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
             {{this.translationService.getTranslation('plantId')}}
         </th>
-        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.plantId}} </td>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.plant.id}} </td>
     </ng-container>
+
+    <ng-container matColumnDef="realQuantity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by real quantity">
+            {{this.translationService.getTranslation('realQuantity')}}
+        </th>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.realQuantity}} </td>
+    </ng-container>
+
 
     <ng-container matColumnDef="expectedQuantity">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected quantity">

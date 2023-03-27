@@ -104,6 +104,7 @@ export class TranslationService {
             toleranceAdded: 'Tolerance added',
             toleranceUpdated: 'Tolerance updated',
             toleranceDeleted: 'Tolerance deleted',
+            realQuantity: 'Real Quantity',
         },
         ro: {
             loginUsernameLabel: 'Nume utilizator',
@@ -204,6 +205,7 @@ export class TranslationService {
             toleranceAdded: 'Toleranță adăugată',
             toleranceUpdated: 'Toleranță actualizată',
             toleranceDeleted: 'Toleranță ștearsă',
+            realQuantity: 'Cantitate Reală',
         }
     };
 
