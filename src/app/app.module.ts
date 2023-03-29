@@ -84,7 +84,7 @@ import { LanguageChangerComponent } from './language-changer/language-changer.co
     MatDividerModule,
     MatExpansionModule,
   ],
-  providers: [HttpHeadersService],
+  providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

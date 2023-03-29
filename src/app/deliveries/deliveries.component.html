@@ -177,13 +177,13 @@
     </mat-form-field>
 </div>
 <table mat-table [dataSource]="dataSourceDeliveries" matSort (matSortChange)="announceSortChange($event)"
-    class="mat-elevation-z8">
+    class="mat-elevation-z8" matSortActive="expectedDeliveryDate" matSortDirection="asc">
 
-    <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
-            {{this.translationService.getTranslation('status')}}
+    <ng-container matColumnDef="supplierId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
+            {{this.translationService.getTranslation('supplierId')}}
         </th>
-        <td mat-cell *matCellDef="let delivery"> {{this.translationService.getTranslation(delivery.status)}} </td>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="dispatchDate">
@@ -200,11 +200,11 @@
         <td mat-cell *matCellDef="let delivery"> {{delivery.deliveryDate | date:'medium'}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="supplierId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
-            {{this.translationService.getTranslation('supplierId')}}
+    <ng-container matColumnDef="expectedDeliveryDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected delivery date">
+            {{this.translationService.getTranslation('expectedDeliveryDate')}}
         </th>
-        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.supplier.id}} </td>
+        <td mat-cell *matCellDef="let delivery"> {{delivery.expectedDeliveryDate | date:'medium'}} </td>
     </ng-container>
 
     <ng-container matColumnDef="materialCode">
@@ -243,11 +243,11 @@
         <td mat-cell *matCellDef="let delivery"> {{delivery.expectedQuantity}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="expectedDeliveryDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by expected delivery date">
-            {{this.translationService.getTranslation('expectedDeliveryDate')}}
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
+            {{this.translationService.getTranslation('status')}}
         </th>
-        <td mat-cell *matCellDef="let delivery"> {{delivery.expectedDeliveryDate | date:'medium'}} </td>
+        <td mat-cell *matCellDef="let delivery"> {{this.translationService.getTranslation(delivery.status)}} </td>
     </ng-container>
 
     <ng-container matColumnDef="dispatchDelivery">

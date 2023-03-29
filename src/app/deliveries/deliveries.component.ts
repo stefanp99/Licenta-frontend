@@ -35,8 +35,8 @@ export interface DeliveryData {
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-  displayedColumnsDeliveries: string[] = ['status', 'dispatchDate', 'deliveryDate', 'supplierId',
-    'materialCode', 'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'expectedDeliveryDate', 'dispatchDelivery'];
+  displayedColumnsDeliveries: string[] = ['supplierId', 'materialCode', 'dispatchDate', 'deliveryDate', 'expectedDeliveryDate',
+    'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'status', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
   private deliveriesByStatusUrl = 'http://localhost:8080/deliveries/deliveries-by-status';
@@ -66,7 +66,9 @@ export class DeliveriesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dialog: MatDialog, private http: HttpClient, private router: Router,
-    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar, private httpHeadersService: HttpHeadersService, public translationService: TranslationService) {
+    private _liveAnnouncer: LiveAnnouncer, private fb: FormBuilder, private _snackBar: MatSnackBar,
+    private httpHeadersService: HttpHeadersService, public translationService: TranslationService,
+    private deviationsComponent: DeviationsComponent) {
   }
 
   ngAfterViewInit() {
@@ -179,8 +181,9 @@ export class DeliveriesComponent implements OnInit {
         response => {
           this.getDeliveriesByStatus('dispatched');
           this.clickedDelivery = null;
-          if (response.deviations != null) {//TODO: bug here response.deviations is always not null
+          if (response.deviations.length > 0) {
             this.openDialogDeviationCreated();
+            this.deviationsComponent.ngOnInit();//TODO: refresh table from deviations
           }
         },
         error => {

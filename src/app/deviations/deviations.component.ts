@@ -77,7 +77,7 @@ export class DeviationsComponent implements OnInit {
     };
   }
 
-  getDeviationsByType() {
+  public getDeviationsByType() {
     let typeParam = '';
     let deviationType = this.selectTypesFormGroup.get('deviationType').value;
     for (let index = 0; index < deviationType.length; index++) {

@@ -143,7 +143,7 @@
     </span>
 </mat-button-toggle>
 <table mat-table [dataSource]="dataSourceContracts" matSort (matSortChange)="announceSortChange($event)"
-    class="mat-elevation-z8">
+    class="mat-elevation-z8" matSortActive="supplierId" matSortDirection="asc">
 
     <ng-container matColumnDef="supplierId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
