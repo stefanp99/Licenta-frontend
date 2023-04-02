@@ -28,5 +28,15 @@ mat-form-field {
 }
 
 .selected {
-    background-color: #0a0a22;
+    background-color: #21216c;
+}
+
+.line-broken-tooltip {
+    white-space: pre-line;
+    transform: translateX(-50%);
+}
+
+::ng-deep .line-broken-tooltip {
+    white-space: pre-line;
+    transform: translateX(-50%);
 }

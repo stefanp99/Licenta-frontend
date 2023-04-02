@@ -226,5 +226,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumnsContracts"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsContracts;"></tr>
 </table>
-<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
+    [showFirstLastButtons]=true>
 </mat-paginator>

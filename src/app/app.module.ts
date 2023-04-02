@@ -29,6 +29,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RegisterSuccessfulDialogComponent } from './register-successful-dialog/register-successful-dialog.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { DeviationsComponent } from './deviations/deviations.component';
@@ -83,6 +84,7 @@ import { LanguageChangerComponent } from './language-changer/language-changer.co
     MatButtonToggleModule,
     MatDividerModule,
     MatExpansionModule,
+    MatTooltipModule,
   ],
   providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]

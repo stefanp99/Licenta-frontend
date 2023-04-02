@@ -15,6 +15,7 @@ import { Plant } from '../plants/plant';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
 import { DeviationsComponent } from '../deviations/deviations.component';
+import { SupplierTooltip } from '../suppliers/supplierTooltip';
 
 export interface Deviation {
   id: number;
@@ -45,6 +46,7 @@ export class DeliveriesComponent implements OnInit {
   private contractsUrl = 'http://localhost:8080/contracts/get-by-plantId-supplierId-materialCode';
   private dispatchUrl = 'http://localhost:8080/deliveries/dispatch-delivery';
   private deliverUrl = 'http://localhost:8080/deliveries/deliver-delivery';
+  private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   orders: Delivery[];
   plants: Plant[];
   contracts: Contract[];
@@ -54,6 +56,7 @@ export class DeliveriesComponent implements OnInit {
   clickedPlant: Plant;
   clickedContract: Contract;
   clickedDelivery: Delivery;
+  supplierTooltips: SupplierTooltip[];
 
   firstFormGroup: FormGroup;
   realQuantityFormGroup: FormGroup;
@@ -78,6 +81,7 @@ export class DeliveriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDeliveriesByStatus('undispatched');
+    this.getAllSupplierToolTips();
     this.firstFormGroup = new FormGroup({
       expectedQuantity: new FormControl(null, []),
       expectedDeliveryDate: new FormControl('', []),
@@ -249,6 +253,34 @@ export class DeliveriesComponent implements OnInit {
   getCurrentDateTime(): string {
     // Use toISOString() to get date-time in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
     return new Date().toISOString().slice(0, 16);
+  }
+
+  getAllSupplierToolTips() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<SupplierTooltip[]>(this.tooltipsUrl, options).subscribe(
+      response => {
+        this.supplierTooltips = response;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSupplierToolTip(supplierId: string): string {
+    let supplierTooltip = this.supplierTooltips?.find(i => i.id === supplierId);
+    if (supplierTooltip) {
+      return `id: ${supplierTooltip.id}
+      name: ${supplierTooltip.name}
+      cityCountry: ${supplierTooltip.cityCountry}
+      totalNumberDeliveries: ${supplierTooltip.totalNumberDeliveries}
+      correctDeliveriesPercentage: ${supplierTooltip.correctDeliveriesPercentage}
+      qtyDeviationCurveRating: ${supplierTooltip.qtyDeviationCurveRating}
+      dayDeviationCurveRating: ${supplierTooltip.dayDeviationCurveRating}
+      averageNumberOfHoursToDeliver: ${supplierTooltip.averageNumberOfHoursToDeliver}`;
+    }
+    else return ``;
   }
 
   openSnackBar(message: string, action: string, duration: number) {

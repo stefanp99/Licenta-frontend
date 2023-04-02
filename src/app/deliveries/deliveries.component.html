@@ -183,7 +183,9 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
             {{this.translationService.getTranslation('supplierId')}}
         </th>
-        <td mat-cell *matCellDef="let delivery"> {{delivery.contract.supplier.id}} </td>
+        <td mat-cell *matCellDef="let delivery" matTooltip="{{getSupplierToolTip(delivery.contract.supplier.id)}}"
+            matTooltipClass="line-broken-tooltip">
+            {{delivery.contract.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="dispatchDate">
@@ -264,5 +266,6 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumnsDeliveries"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsDeliveries;"></tr>
 </table>
-<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page">
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
+    [showFirstLastButtons]=true>
 </mat-paginator>
