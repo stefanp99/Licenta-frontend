@@ -16,6 +16,8 @@
         <li><strong>{{this.translationService.getTranslation('emailLabel')}}:</strong> {{ userDetails.emailAddress }}
         </li>
     </ul>
+    <button mat-raised-button color="primary"
+        (click)="openDialogSystemConfigurations()">{{this.translationService.getTranslation('systemConfigurations')}}</button>
 </mat-expansion-panel>
 
 <br /><br />

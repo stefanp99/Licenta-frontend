@@ -1,0 +1,32 @@
+<table mat-table [dataSource]="dataSourceSystemConfigurations" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8" matSortActive="configGroup" matSortDirection="asc">
+
+    <ng-container matColumnDef="configGroup">
+        <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configGroup')}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.configGroup }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="configName">
+        <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configName')}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.configName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="configValues">
+        <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configValues')}} </th>
+        <td mat-cell *matCellDef="let element">
+            <table *ngIf="element.configValues | jsonTable as tableData" class="configValuesTable">
+                <tr *ngFor="let row of tableData">
+                    <td>{{ this.translationService.getTranslation(row.key) }}</td>
+                    <td>{{ row.value }}</td>
+                </tr>
+            </table>
+            <div *ngIf="!(element.configValues | jsonTable)">
+                {{ element.configValues }}
+            </div>
+        </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsSystemConfigurations"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsSystemConfigurations;"></tr>
+</table>

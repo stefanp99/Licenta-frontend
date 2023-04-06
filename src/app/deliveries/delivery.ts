@@ -9,4 +9,5 @@ export interface Delivery {
     contract: Contract,
     expectedDeliveryDate: Date,
     realQuantity: number,
+    addDeliveryDate: Date
 }

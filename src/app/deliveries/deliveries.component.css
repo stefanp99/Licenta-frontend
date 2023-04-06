@@ -31,12 +31,10 @@ mat-form-field {
     background-color: #21216c;
 }
 
-.line-broken-tooltip {
-    white-space: pre-line;
-    transform: translateX(-50%);
-}
-
 ::ng-deep .line-broken-tooltip {
     white-space: pre-line;
     transform: translateX(-50%);
+    max-width: 900px;
+    max-height: 1000px;
+    font-size: 16px;
 }

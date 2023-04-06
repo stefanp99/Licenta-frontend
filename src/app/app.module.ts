@@ -39,6 +39,8 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
 import { PlantsComponent } from './plants/plants.component';
 import { HttpHeadersService } from './http-headers-service';
 import { LanguageChangerComponent } from './language-changer/language-changer.component';
+import { SystemConfigurationsComponent } from './system-configurations/system-configurations.component';
+import { ConfigValuesTablePipe } from './system-configurations/config-values-table.pipe';
 
 
 @NgModule({
@@ -55,7 +57,9 @@ import { LanguageChangerComponent } from './language-changer/language-changer.co
     TolerancesComponent,
     SuppliersComponent,
     PlantsComponent,
-    LanguageChangerComponent
+    LanguageChangerComponent,
+    SystemConfigurationsComponent,
+    ConfigValuesTablePipe
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
+import { SupplierTooltip } from '../suppliers/supplierTooltip';
 
 @Component({
   selector: 'app-deviations',
@@ -22,9 +23,11 @@ export class DeviationsComponent implements OnInit {
   deviationTypes = [{ key: 1, value: 'qtyMinus' }, { key: 2, value: 'qtyPlus' }, { key: 3, value: 'dayMinus' }, { key: 4, value: 'dayPlus' }];
   displayedColumnsDeviations: string[] = ['creationDate', 'type', 'quantityDiff', 'timeDiff', 'supplierId', 'materialCode', 'pricePerUnit', 'plantId'];
   private deviationByTypeUrl = 'http://localhost:8080/deviations/by-type';
+  private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   allDeviations: Deviation[];
   dataSourceDeviations = new MatTableDataSource([]);
   selectedTypes: string[] = [];
+  supplierTooltips: SupplierTooltip[];
 
   selectTypesFormGroup: FormGroup;
 
@@ -57,6 +60,7 @@ export class DeviationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllSupplierToolTips();
     this.selectTypesFormGroup = new FormGroup({
       deviationType: new FormControl('', []),
     });
@@ -97,6 +101,35 @@ export class DeviationsComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  getAllSupplierToolTips() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<SupplierTooltip[]>(this.tooltipsUrl, options).subscribe(
+      response => {
+        this.supplierTooltips = response;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSupplierToolTip(supplierId: string): string {
+    let supplierTooltip = this.supplierTooltips?.find(i => i.id === supplierId);
+    if (supplierTooltip) {
+      return `${this.translationService.getTranslation('id')}: ${supplierTooltip.id}
+      ${this.translationService.getTranslation('name')}: ${supplierTooltip.name}
+      ${this.translationService.getTranslation('cityCountry')}: ${supplierTooltip.cityCountry}
+      ${this.translationService.getTranslation('totalNumberDeliveries')}: ${supplierTooltip.totalNumberDeliveries}
+      ${this.translationService.getTranslation('correctDeliveriesPercentage')}: ${supplierTooltip.correctDeliveriesPercentage.toFixed(2)}
+      ${this.translationService.getTranslation('qtyDeviationCurveRating')}: ${supplierTooltip.qtyDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('dayDeviationCurveRating')}: ${supplierTooltip.dayDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursToDeliver')}: ${supplierTooltip.averageNumberOfHoursToDeliver.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursLeadTime')}: ${supplierTooltip.averageLeadTimeInHours.toFixed(2)}`;
+    }
+    else return ``;
   }
 
 

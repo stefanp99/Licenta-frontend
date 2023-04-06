@@ -18,6 +18,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
+import { SupplierTooltip } from '../suppliers/supplierTooltip';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class ContractsComponent implements OnInit {
   private deleteContractUrl = 'http://localhost:8080/contracts/delete'
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
   private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
+  private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   allContracts: Contract[];
   plants: Plant[];
   suppliers: Supplier[];
@@ -54,6 +56,7 @@ export class ContractsComponent implements OnInit {
   pricePerUnits: number[] = [];
   editMode: boolean = false;
   clickedContract: Contract;
+  supplierTooltips: SupplierTooltip[];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -69,6 +72,7 @@ export class ContractsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllSupplierToolTips();
     this.getContractsFormGroup = new FormGroup({
       plantId: new FormControl('', []),
       supplierId: new FormControl('', []),
@@ -268,6 +272,35 @@ export class ContractsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  getAllSupplierToolTips() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<SupplierTooltip[]>(this.tooltipsUrl, options).subscribe(
+      response => {
+        this.supplierTooltips = response;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSupplierToolTip(supplierId: string): string {
+    let supplierTooltip = this.supplierTooltips?.find(i => i.id === supplierId);
+    if (supplierTooltip) {
+      return `${this.translationService.getTranslation('id')}: ${supplierTooltip.id}
+      ${this.translationService.getTranslation('name')}: ${supplierTooltip.name}
+      ${this.translationService.getTranslation('cityCountry')}: ${supplierTooltip.cityCountry}
+      ${this.translationService.getTranslation('totalNumberDeliveries')}: ${supplierTooltip.totalNumberDeliveries}
+      ${this.translationService.getTranslation('correctDeliveriesPercentage')}: ${supplierTooltip.correctDeliveriesPercentage.toFixed(2)}
+      ${this.translationService.getTranslation('qtyDeviationCurveRating')}: ${supplierTooltip.qtyDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('dayDeviationCurveRating')}: ${supplierTooltip.dayDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursToDeliver')}: ${supplierTooltip.averageNumberOfHoursToDeliver.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursLeadTime')}: ${supplierTooltip.averageLeadTimeInHours.toFixed(2)}`;
+    }
+    else return ``;
   }
 
   openSnackBar(message: string, action: string, duration: number) {

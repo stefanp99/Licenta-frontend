@@ -6,5 +6,6 @@ export interface SupplierTooltip {
     correctDeliveriesPercentage: number,
     qtyDeviationCurveRating: number,
     dayDeviationCurveRating: number,
-    averageNumberOfHoursToDeliver: number
+    averageNumberOfHoursToDeliver: number,
+    averageLeadTimeInHours: number,
 }

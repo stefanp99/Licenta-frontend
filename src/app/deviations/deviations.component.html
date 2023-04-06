@@ -54,7 +54,10 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
             {{this.translationService.getTranslation('supplierId')}}
         </th>
-        <td mat-cell *matCellDef="let deviation"> {{deviation.delivery.contract.supplier.id}} </td>
+        <td mat-cell *matCellDef="let deviation"
+            matTooltip="{{getSupplierToolTip(deviation.delivery.contract.supplier.id)}}"
+            [matTooltipClass]="'line-broken-tooltip'" [matTooltipPosition]="'right'">
+            {{deviation.delivery.contract.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="materialCode">

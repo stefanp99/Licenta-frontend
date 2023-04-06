@@ -36,7 +36,7 @@ export interface DeliveryData {
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-  displayedColumnsDeliveries: string[] = ['supplierId', 'materialCode', 'dispatchDate', 'deliveryDate', 'expectedDeliveryDate',
+  displayedColumnsDeliveries: string[] = ['supplierId', 'materialCode', 'addDeliveryDate', 'dispatchDate', 'deliveryDate', 'expectedDeliveryDate',
     'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'status', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
@@ -271,14 +271,15 @@ export class DeliveriesComponent implements OnInit {
   getSupplierToolTip(supplierId: string): string {
     let supplierTooltip = this.supplierTooltips?.find(i => i.id === supplierId);
     if (supplierTooltip) {
-      return `id: ${supplierTooltip.id}
-      name: ${supplierTooltip.name}
-      cityCountry: ${supplierTooltip.cityCountry}
-      totalNumberDeliveries: ${supplierTooltip.totalNumberDeliveries}
-      correctDeliveriesPercentage: ${supplierTooltip.correctDeliveriesPercentage}
-      qtyDeviationCurveRating: ${supplierTooltip.qtyDeviationCurveRating}
-      dayDeviationCurveRating: ${supplierTooltip.dayDeviationCurveRating}
-      averageNumberOfHoursToDeliver: ${supplierTooltip.averageNumberOfHoursToDeliver}`;
+      return `${this.translationService.getTranslation('id')}: ${supplierTooltip.id}
+      ${this.translationService.getTranslation('name')}: ${supplierTooltip.name}
+      ${this.translationService.getTranslation('cityCountry')}: ${supplierTooltip.cityCountry}
+      ${this.translationService.getTranslation('totalNumberDeliveries')}: ${supplierTooltip.totalNumberDeliveries}
+      ${this.translationService.getTranslation('correctDeliveriesPercentage')}: ${supplierTooltip.correctDeliveriesPercentage.toFixed(2)}
+      ${this.translationService.getTranslation('qtyDeviationCurveRating')}: ${supplierTooltip.qtyDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('dayDeviationCurveRating')}: ${supplierTooltip.dayDeviationCurveRating.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursToDeliver')}: ${supplierTooltip.averageNumberOfHoursToDeliver.toFixed(2)}
+      ${this.translationService.getTranslation('averageNumberOfHoursLeadTime')}: ${supplierTooltip.averageLeadTimeInHours.toFixed(2)}`;
     }
     else return ``;
   }

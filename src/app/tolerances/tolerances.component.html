@@ -183,7 +183,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
             {{this.translationService.getTranslation('supplierId')}}
         </th>
-        <td mat-cell *matCellDef="let tolerance"> {{tolerance.supplier.id}} </td>
+        <td mat-cell *matCellDef="let tolerance" matTooltip="{{getSupplierToolTip(tolerance.supplier.id)}}"
+            [matTooltipClass]="'line-broken-tooltip'" [matTooltipPosition]="'right'"> {{tolerance.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="supplierName">

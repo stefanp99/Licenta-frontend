@@ -142,6 +142,7 @@
         edit
     </span>
 </mat-button-toggle>
+
 <table mat-table [dataSource]="dataSourceContracts" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8" matSortActive="supplierId" matSortDirection="asc">
 
@@ -149,7 +150,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
             {{this.translationService.getTranslation('supplierId')}}
         </th>
-        <td mat-cell *matCellDef="let contract"> {{contract.supplier.id}} </td>
+        <td mat-cell *matCellDef="let contract" matTooltip="{{getSupplierToolTip(contract.supplier.id)}}"
+            [matTooltipClass]="'line-broken-tooltip'" [matTooltipPosition]="'right'"> {{contract.supplier.id}} </td>
     </ng-container>
 
     <ng-container matColumnDef="supplierName">
