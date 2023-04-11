@@ -59,7 +59,7 @@ import { ConfigValuesTablePipe } from './system-configurations/config-values-tab
     PlantsComponent,
     LanguageChangerComponent,
     SystemConfigurationsComponent,
-    ConfigValuesTablePipe
+    ConfigValuesTablePipe,
   ],
   imports: [
     BrowserModule,

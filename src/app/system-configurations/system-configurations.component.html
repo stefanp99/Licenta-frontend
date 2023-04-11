@@ -2,30 +2,66 @@
     class="mat-elevation-z8" matSortActive="configGroup" matSortDirection="asc">
 
     <ng-container matColumnDef="configGroup">
-        <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configGroup')}} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by config group">
+            {{this.translationService.getTranslation('configGroup')}} </th>
         <td mat-cell *matCellDef="let element"> {{ element.configGroup }} </td>
     </ng-container>
 
     <ng-container matColumnDef="configName">
-        <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configName')}} </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by config name">
+            {{this.translationService.getTranslation('configName')}} </th>
         <td mat-cell *matCellDef="let element"> {{ element.configName }} </td>
     </ng-container>
 
     <ng-container matColumnDef="configValues">
         <th mat-header-cell *matHeaderCellDef> {{this.translationService.getTranslation('configValues')}} </th>
-        <td mat-cell *matCellDef="let element">
-            <table *ngIf="element.configValues | jsonTable as tableData" class="configValuesTable">
-                <tr *ngFor="let row of tableData">
-                    <td>{{ this.translationService.getTranslation(row.key) }}</td>
-                    <td>{{ row.value }}</td>
-                </tr>
-            </table>
-            <div *ngIf="!(element.configValues | jsonTable)">
-                {{ element.configValues }}
+        <td mat-cell *matCellDef="let element; let i = index;">
+            <div *ngIf="element.editMode">
+                <table *ngIf="element.configValues | jsonTable as tableData" class="configValuesTable">
+                    <tr *ngFor="let row of tableData">
+                        <td>{{ this.translationService.getTranslation(row.key) }}</td>
+                        <td>
+                            <input matInput type="text" [(ngModel)]="configs[i][row.key]">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div *ngIf=" !element.editMode">
+                <table *ngIf="element.configValues | jsonTable as tableData" class="configValuesTable">
+                    <tr *ngFor="let row of tableData">
+                        <td>{{ this.translationService.getTranslation(row.key) }}</td>
+                        <td>{{ row.value }}</td>
+                    </tr>
+                </table>
+                <div *ngIf="!(element.configValues | jsonTable)">
+                    {{ element.configValues }}
+                </div>
             </div>
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-button-toggle color="primary" (click)="changeEditMode(element)" class="editButton">
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+            </mat-button-toggle>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="save">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+            <mat-button-toggle *ngIf="element.editMode" color="primary" (click)="saveElement(element, i)"
+                class="editButton">
+                <span class="material-symbols-outlined">
+                    save
+                </span>
+            </mat-button-toggle>
+        </td>
+    </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumnsSystemConfigurations"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsSystemConfigurations;"></tr>

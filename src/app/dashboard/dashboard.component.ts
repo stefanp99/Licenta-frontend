@@ -17,10 +17,8 @@ import { SystemConfiguration } from '../system-configurations/system-configurati
 export class DashboardComponent implements OnInit {
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private loggedUserUrl = 'http://localhost:8080/users/logged-user-dto';
-  private systemConfigurationsUrl = 'http://localhost:8080/system-configurations/get-by-group-and-name';
 
   userDetails: any = {};
-  systemConfigurations: SystemConfiguration[];
   constructor(private http: HttpClient, private router: Router, private httpHeadersService: HttpHeadersService,
     public translationService: TranslationService, public dialog: MatDialog) { }
 
@@ -34,26 +32,10 @@ export class DashboardComponent implements OnInit {
         console.error(error);
       }
     );
-    this.getSystemConfigurations();
-  }
-
-  getSystemConfigurations() {
-    const httpParams: HttpParams = new HttpParams();
-    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
-    this.http.get<SystemConfiguration[]>(this.systemConfigurationsUrl, options).subscribe(
-      response => {
-        this.systemConfigurations = response;
-      },
-      error => {
-        console.error(error);
-      }
-    );
   }
 
   openDialogSystemConfigurations() {
-    const dialogRef = this.dialog.open(SystemConfigurationsComponent, {
-      data: this.systemConfigurations,
-    });
+    const dialogRef = this.dialog.open(SystemConfigurationsComponent, {});
 
     dialogRef.afterClosed().subscribe(result => {
 
