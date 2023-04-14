@@ -79,9 +79,6 @@
             </mat-step>
             <mat-step label="{{this.translationService.getTranslation('stepTwo')}}">
                 <div *ngIf="clickedPlant!=null">
-                    <!-- <h3>
-                        {{this.translationService.getTranslation('selectedPlant')}}: {{clickedPlant.id}}
-                    </h3> -->
                     <button mat-raised-button color="primary"
                         (click)="getContracts(firstFormGroup.value.materialCode, clickedPlant.id)"
                         matStepperNext>{{this.translationService.getTranslation('next')}}</button>
@@ -164,16 +161,64 @@
 <mat-divider></mat-divider>
 <br />
 <div class="filters">
-    <mat-form-field appearance="outline">
-        <mat-label>{{this.translationService.getTranslation('deliveryStatusLabel')}}</mat-label>
-        <select matNativeControl (change)="getDeliveriesByStatus($event.target.value)">
-            <option value="undispatched">{{this.translationService.getTranslation('undispatched')}}</option>
-            <option value="dispatched">{{this.translationService.getTranslation('dispatched')}}</option>
-            <option value="delivered">{{this.translationService.getTranslation('delivered')}}</option>
-            <option value="all">{{this.translationService.getTranslation('all')}}</option>
-        </select>
-    </mat-form-field>
+    <form [formGroup]="getDeliveriesFormGroup">
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('supplierId')}}
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('supplierId')}}"
+                formControlName="supplierId" appearance="outline" [formControl]="myControlSuppliers"
+                [matAutocomplete]="autoSuppliers">
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
 
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('plantId')}}
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('plantId')}}"
+                formControlName="plantId" appearance="outline" [formControl]="myControlPlants"
+                [matAutocomplete]="autoPlants">
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('materialCode')}}
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode"
+                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('deliveryStatusLabel')}}</mat-label>
+            <select matNativeControl formControlName="status">
+                <option value="undispatched">{{this.translationService.getTranslation('undispatched')}}</option>
+                <option value="dispatched">{{this.translationService.getTranslation('dispatched')}}</option>
+                <option value="delivered">{{this.translationService.getTranslation('delivered')}}</option>
+                <option value="all">{{this.translationService.getTranslation('all')}}</option>
+            </select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="searchDeliveries()"
+            class="searchFormButton">{{this.translationService.getTranslation('searchDelivery')}}</button>
+        <button mat-raised-button color="warn" (click)="clearForms()"
+            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+    </form>
+    <br />
     <mat-form-field appearance="outline">
         <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
         <input matInput (keyup)="applyFilterDeliveries($event)" placeholder="Ex. ium" #input>

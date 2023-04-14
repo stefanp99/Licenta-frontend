@@ -1,8 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { MatSort, Sort } from '@angular/material/sort';
 import { Router } from '@angular/router';
-import { environment } from "../../environments/environment";
+import { map, startWith } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -16,6 +17,7 @@ import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
 import { DeviationsComponent } from '../deviations/deviations.component';
 import { SupplierTooltip } from '../suppliers/supplierTooltip';
+import { Supplier } from '../suppliers/supplier';
 
 export interface Deviation {
   id: number;
@@ -40,15 +42,17 @@ export class DeliveriesComponent implements OnInit {
     'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'status', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
-  private deliveriesByStatusUrl = 'http://localhost:8080/deliveries/deliveries-by-status';
+  private deliveriesByStatusSupplierMaterialPlantsUrl = 'http://localhost:8080/deliveries/deliveries-by-status-supplier-material-plant';
   private addDeliveryUrl = 'http://localhost:8080/deliveries/add-delivery';
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
   private contractsUrl = 'http://localhost:8080/contracts/get-by-plantId-supplierId-materialCode';
   private dispatchUrl = 'http://localhost:8080/deliveries/dispatch-delivery';
   private deliverUrl = 'http://localhost:8080/deliveries/deliver-delivery';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
+  private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
   orders: Delivery[];
   plants: Plant[];
+  suppliers: Supplier[];
   contracts: Contract[];
   dataSourceDeliveries = new MatTableDataSource([]);
   dataSourcePlants = new MatTableDataSource([]);
@@ -57,6 +61,13 @@ export class DeliveriesComponent implements OnInit {
   clickedContract: Contract;
   clickedDelivery: Delivery;
   supplierTooltips: SupplierTooltip[];
+  getDeliveriesFormGroup: FormGroup;
+  optionsSuppliers: string[] = [];
+  optionsPlants: string[] = [];
+  myControlSuppliers = new FormControl('');
+  myControlPlants = new FormControl('');
+  filteredOptionsSuppliers: Observable<string[]>;
+  filteredOptionsPlants: Observable<string[]>;
 
   firstFormGroup: FormGroup;
   realQuantityFormGroup: FormGroup;
@@ -80,7 +91,23 @@ export class DeliveriesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getDeliveriesByStatus('undispatched');
+    this.getDeliveriesFormGroup = new FormGroup({
+      status: new FormControl('undispatched', []),
+      plantId: new FormControl('', []),
+      supplierId: new FormControl('', []),
+      materialCode: new FormControl('', [])
+    });
+    this.getDeliveries('undispatched');
+    this.getPlants();
+    this.getSuppliers();
+    this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSuppliers(value || '')),
+    );
+    this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPlants(value || '')),
+    );
     this.getAllSupplierToolTips();
     this.firstFormGroup = new FormGroup({
       expectedQuantity: new FormControl(null, []),
@@ -114,6 +141,27 @@ export class DeliveriesComponent implements OnInit {
         this.plants = response;
         this.dataSourcePlants.data = this.plants;
         this.dataSourcePlants.sort = this.sort;
+        this.plants.forEach(plant => {
+          this.optionsPlants.push(plant.id);
+        });
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSuppliers() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<Supplier[]>(this.suppliersUrl, options).subscribe(
+      response => {
+        this.suppliers = response;
+        this.suppliers.forEach(supplier => {
+          this.optionsSuppliers.push(supplier.id);
+        });
+        // this.dataSourcePlants.data = this.plants;
+        // this.dataSourcePlants.sort = this.sort;
       },
       error => {
         console.error(error);
@@ -136,10 +184,18 @@ export class DeliveriesComponent implements OnInit {
     );
   }
 
-  getDeliveriesByStatus(selectedStatus: string) {
-    const httpParams: HttpParams = new HttpParams().set('status', selectedStatus);
+  getDeliveries(selectedStatus?: string) {
+    if (selectedStatus)
+      var httpParams = new HttpParams().set('status', selectedStatus);
+    else
+      var httpParams = new HttpParams()
+        .set('status', this.getDeliveriesFormGroup.value.status)
+        .set('plantId', this.getDeliveriesFormGroup.value.plantId)
+        .set('supplierId', this.getDeliveriesFormGroup.value.supplierId)
+        .set('materialCode', this.getDeliveriesFormGroup.value.materialCode);
+
     const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
-    this.http.get<Delivery[]>(this.deliveriesByStatusUrl, options).subscribe(
+    this.http.get<Delivery[]>(this.deliveriesByStatusSupplierMaterialPlantsUrl, options).subscribe(
       response => {
         this.orders = response;
         this.dataSourceDeliveries.data = this.orders;
@@ -151,12 +207,24 @@ export class DeliveriesComponent implements OnInit {
     );
   }
 
+  searchDeliveries() {
+    this.getDeliveriesFormGroup.value.plantId = this.myControlPlants.value;
+    this.getDeliveriesFormGroup.value.supplierId = this.myControlSuppliers.value;
+    this.getDeliveries();
+  }
+
+  clearForms() {
+    this.getDeliveriesFormGroup.reset();
+    this.myControlPlants.reset();
+    this.myControlSuppliers.reset();
+  }
+
   dispatchDelivery(delivery: Delivery) {
     const httpParams: HttpParams = new HttpParams().set('id', delivery.id);
     const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.put<Delivery>(this.dispatchUrl, null, options).subscribe(
       response => {
-        this.getDeliveriesByStatus('undispatched');
+        this.getDeliveries('undispatched');
         this.clickedDelivery = null;
       },
       error => {
@@ -183,7 +251,7 @@ export class DeliveriesComponent implements OnInit {
       const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
       this.http.put<DeliveryData>(this.deliverUrl, null, options).subscribe(
         response => {
-          this.getDeliveriesByStatus('dispatched');
+          this.getDeliveries('dispatched');
           this.clickedDelivery = null;
           if (response.deviations.length > 0) {
             this.openDialogDeviationCreated();
@@ -241,7 +309,7 @@ export class DeliveriesComponent implements OnInit {
           this.firstFormGroup.reset();
           this.clickedPlant = null;
           this.clickedContract = null;
-          this.getDeliveriesByStatus('undispatched');
+          this.getDeliveries('undispatched');
         },
         (error) => {
           console.error('Add failed!', error);
@@ -301,6 +369,16 @@ export class DeliveriesComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  private _filterPlants(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsPlants.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterSuppliers(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsSuppliers.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   applyFilterDeliveries(event: Event) {

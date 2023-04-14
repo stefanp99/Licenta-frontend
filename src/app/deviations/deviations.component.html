@@ -2,16 +2,63 @@
 <mat-divider></mat-divider>
 <br />
 <div class="filters">
-
-    <form [formGroup]="selectTypesFormGroup">
+    <form [formGroup]="getDeviationsFormGroup">
         <mat-form-field appearance="outline">
-            <mat-select placeholder="{{this.translationService.getTranslation('deviationTypes')}}"
-                formControlName="deviationType" multiple (closed)="getDeviationsByType()">
-                <mat-option *ngFor="let type of deviationTypes" [value]="type.key"
-                    (click)="togglePerOne(allSelected.viewValue)">{{type.value}}</mat-option>
-                <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
-            </mat-select>
+            <mat-label>
+                {{this.translationService.getTranslation('supplierId')}}
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('supplierId')}}"
+                formControlName="supplierId" appearance="outline" [formControl]="myControlSuppliers"
+                [matAutocomplete]="autoSuppliers">
+            <mat-autocomplete #autoSuppliers="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsSuppliers | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('plantId')}}
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+            <input matInput type="text" placeholder="{{this.translationService.getTranslation('plantId')}}"
+                formControlName="plantId" appearance="outline" [formControl]="myControlPlants"
+                [matAutocomplete]="autoPlants">
+            <mat-autocomplete #autoPlants="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsPlants | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('materialCode')}}
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode"
+                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+        </mat-form-field>
+
+        <form [formGroup]="selectTypesFormGroup">
+            <mat-form-field appearance="outline">
+                <mat-select placeholder="{{this.translationService.getTranslation('deviationTypes')}}"
+                    formControlName="deviationType" multiple>
+                    <mat-option *ngFor="let type of deviationTypes" [value]="type.key"
+                        (click)="togglePerOne(allSelected.viewValue)">{{type.value}}</mat-option>
+                    <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <button mat-raised-button color="primary" (click)="searchDeviations()"
+            class="searchFormButton">{{this.translationService.getTranslation('searchDeviation')}}</button>
+        <button mat-raised-button color="warn" (click)="clearForms()"
+            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
     </form>
     <br />
     <mat-form-field appearance="outline">

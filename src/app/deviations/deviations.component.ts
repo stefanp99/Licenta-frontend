@@ -6,13 +6,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Deviation } from './deviation';
-import { environment } from "../../environments/environment";
+import { map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
 import { SupplierTooltip } from '../suppliers/supplierTooltip';
+import { Supplier } from '../suppliers/supplier';
+import { Plant } from '../plants/plant';
 
 @Component({
   selector: 'app-deviations',
@@ -22,12 +25,23 @@ import { SupplierTooltip } from '../suppliers/supplierTooltip';
 export class DeviationsComponent implements OnInit {
   deviationTypes = [{ key: 1, value: 'qtyMinus' }, { key: 2, value: 'qtyPlus' }, { key: 3, value: 'dayMinus' }, { key: 4, value: 'dayPlus' }];
   displayedColumnsDeviations: string[] = ['creationDate', 'type', 'quantityDiff', 'timeDiff', 'supplierId', 'materialCode', 'pricePerUnit', 'plantId'];
-  private deviationByTypeUrl = 'http://localhost:8080/deviations/by-type';
+  private deviationByTypeSupplierMaterialPlantsUrl = 'http://localhost:8080/deviations/by-type-supplier-material-plant';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
+  private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
+  private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
   allDeviations: Deviation[];
+  plants: Plant[];
+  suppliers: Supplier[];
   dataSourceDeviations = new MatTableDataSource([]);
   selectedTypes: string[] = [];
   supplierTooltips: SupplierTooltip[];
+  getDeviationsFormGroup: FormGroup;
+  optionsSuppliers: string[] = [];
+  optionsPlants: string[] = [];
+  myControlSuppliers = new FormControl('');
+  myControlPlants = new FormControl('');
+  filteredOptionsSuppliers: Observable<string[]>;
+  filteredOptionsPlants: Observable<string[]>;
 
   selectTypesFormGroup: FormGroup;
 
@@ -64,7 +78,23 @@ export class DeviationsComponent implements OnInit {
     this.selectTypesFormGroup = new FormGroup({
       deviationType: new FormControl('', []),
     });
-    this.getDeviationsByType();
+    this.getDeviationsFormGroup = new FormGroup({
+      type: new FormControl('', []),
+      plantId: new FormControl('', []),
+      supplierId: new FormControl('', []),
+      materialCode: new FormControl('', [])
+    });
+    this.getDeviations();
+    this.getPlants();
+    this.getSuppliers();
+    this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterSuppliers(value || '')),
+    );
+    this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterPlants(value || '')),
+    );
     this.dataSourceDeviations.sortingDataAccessor = (deviation, property) => {
       switch (property) {
         case 'supplierId':
@@ -81,17 +111,25 @@ export class DeviationsComponent implements OnInit {
     };
   }
 
-  public getDeviationsByType() {
+  public getDeviations() {
     let typeParam = '';
     let deviationType = this.selectTypesFormGroup.get('deviationType').value;
-    for (let index = 0; index < deviationType.length; index++) {
-      if (deviationType[index] !== 0)
-        typeParam += this.deviationTypes[deviationType[index] - 1].value + ',';
+    if (deviationType) {
+      for (let index = 0; index < deviationType.length; index++) {
+        if (deviationType[index] !== 0)
+          typeParam += this.deviationTypes[deviationType[index] - 1].value + ',';
+      }
     }
+    else
+      deviationType = 'qtyMinus,qtyPlus,dayMinus,dayPlus';
     typeParam = typeParam.slice(0, -1);
-    const httpParams: HttpParams = new HttpParams().set('type', typeParam);
+    const httpParams: HttpParams = new HttpParams()
+      .set('type', typeParam)
+      .set('plantId', this.getDeviationsFormGroup.value.plantId)
+      .set('supplierId', this.getDeviationsFormGroup.value.supplierId)
+      .set('materialCode', this.getDeviationsFormGroup.value.materialCode);;
     const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
-    this.http.get<Deviation[]>(this.deviationByTypeUrl, options).subscribe(
+    this.http.get<Deviation[]>(this.deviationByTypeSupplierMaterialPlantsUrl, options).subscribe(
       response => {
         this.allDeviations = response;
         this.dataSourceDeviations.data = this.allDeviations;
@@ -101,6 +139,53 @@ export class DeviationsComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  getPlants() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<Plant[]>(this.plantsUrl, options).subscribe(
+      response => {
+        this.plants = response;
+        this.plants.forEach(plant => {
+          this.optionsPlants.push(plant.id);
+        });
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSuppliers() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<Supplier[]>(this.suppliersUrl, options).subscribe(
+      response => {
+        this.suppliers = response;
+        this.suppliers.forEach(supplier => {
+          this.optionsSuppliers.push(supplier.id);
+        });
+        // this.dataSourcePlants.data = this.plants;
+        // this.dataSourcePlants.sort = this.sort;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  searchDeviations() {
+    this.getDeviationsFormGroup.value.plantId = this.myControlPlants.value;
+    this.getDeviationsFormGroup.value.supplierId = this.myControlSuppliers.value;
+    this.getDeviations();
+  }
+
+  clearForms() {
+    this.getDeviationsFormGroup.reset();
+    this.myControlPlants.reset();
+    this.myControlSuppliers.reset();
+    this.selectTypesFormGroup.reset();
   }
 
   getAllSupplierToolTips() {
@@ -130,6 +215,16 @@ export class DeviationsComponent implements OnInit {
       ${this.translationService.getTranslation('averageNumberOfHoursLeadTime')}: ${supplierTooltip.averageLeadTimeInHours.toFixed(2)}`;
     }
     else return ``;
+  }
+
+  private _filterPlants(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsPlants.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterSuppliers(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsSuppliers.filter(option => option.toLowerCase().includes(filterValue));
   }
 
 

@@ -134,6 +134,8 @@ export class TranslationService {
             age: 'Age',
             addDeliveryDate: 'Add delivery date',
             averageNumberOfHoursLeadTime: 'Average number of hours for lead time',
+            searchDelivery: 'Search delivery',
+            searchDeviation: 'Search deviation',
         },
         ro: {
             loginUsernameLabel: 'Nume utilizator',
@@ -264,6 +266,8 @@ export class TranslationService {
             age: 'Vârstă',
             addDeliveryDate: 'Data adaugarii livrarii',
             averageNumberOfHoursLeadTime: 'Termenul de livrare mediu in ore',
+            searchDelivery: 'Caută livrare',
+            searchDeviation: 'Caută deviație',
         }
     };
 
