@@ -125,23 +125,21 @@
             <input matInput type="text" formControlName="materialCode"
                 placeholder="{{this.translationService.getTranslation('materialCode')}}">
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="searchContracts()"
-            class="searchFormButton">{{this.translationService.getTranslation('searchContract')}}</button>
-        <button mat-raised-button color="warn" (click)="clearForms()"
-            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        <div class="button-container">
+            <button mat-raised-button color="primary" (click)="searchContracts()"
+                class="searchFormButton">{{this.translationService.getTranslation('searchContract')}}</button>
+            <button mat-raised-button color="warn" (click)="clearForms()"
+                class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        </div>
     </form>
     <br />
-    <mat-form-field appearance="outline">
-        <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
-        <input matInput (keyup)="applyFilterContracts($event)" placeholder="Ex. ium" #input>
-    </mat-form-field>
+    <div class="filter-container">
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
+            <input matInput (keyup)="applyFilterContracts($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+    </div>
 </div>
-
-<mat-button-toggle color="primary" (click)="changeEditMode()" class="editButton">
-    <span class="material-symbols-outlined">
-        edit
-    </span>
-</mat-button-toggle>
 
 <table mat-table [dataSource]="dataSourceContracts" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8" matSortActive="supplierId" matSortDirection="asc">
@@ -162,66 +160,87 @@
     </ng-container>
 
     <ng-container matColumnDef="materialCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Material Code">
             {{this.translationService.getTranslation('materialCode')}}
         </th>
-        <ng-container *ngIf="editMode === false">
-            <td mat-cell *matCellDef="let contract">{{contract.materialCode}}</td>
-        </ng-container>
-        <ng-container *ngIf="editMode === true">
-            <td mat-cell *matCellDef="let contract; let i = index" class="modifyCells">
+        <td mat-cell *matCellDef="let element; let i = index;">
+            <div *ngIf="!element.editMode">
+                {{element.materialCode}}
+            </div>
+
+            <div *ngIf="element.editMode">
                 <mat-form-field appearance="outline" class="modifyCells">
-                    <input matInput type="text" [(ngModel)]="materialCodes[i]">
+                    <input matInput type="text" [(ngModel)]="element.materialCode">
                 </mat-form-field>
-            </td>
-        </ng-container>
+            </div>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="plantId">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Plant ID">
             {{this.translationService.getTranslation('plantId')}}
         </th>
-        <ng-container *ngIf="editMode === false">
-            <td mat-cell *matCellDef="let contract">{{contract.plant.id}}</td>
-        </ng-container>
-        <ng-container *ngIf="editMode === true">
-            <td mat-cell *matCellDef="let contract; let i = index">
+        <td mat-cell *matCellDef="let element; let i = index;">
+            <div *ngIf="!element.editMode">
+                {{element.plant.id}}
+            </div>
+
+            <div *ngIf="element.editMode">
                 <mat-form-field appearance="outline" class="modifyCells">
-                    <input matInput type="text" [(ngModel)]="plantIds[i]">
+                    <input matInput type="text" [(ngModel)]="element.plant.id">
                 </mat-form-field>
-            </td>
-        </ng-container>
+            </div>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="pricePerUnit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Price per Unit">
             {{this.translationService.getTranslation('pricePerUnit')}}
         </th>
-        <ng-container *ngIf="editMode === false">
-            <td mat-cell *matCellDef="let contract">{{contract.pricePerUnit}}</td>
-        </ng-container>
-        <ng-container *ngIf="editMode === true">
-            <td mat-cell *matCellDef="let contract; let i = index">
+        <td mat-cell *matCellDef="let element; let i = index;">
+            <div *ngIf="!element.editMode">
+                {{element.pricePerUnit}}
+            </div>
+
+            <div *ngIf="element.editMode">
                 <mat-form-field appearance="outline" class="modifyCells">
-                    <input matInput type="text" [(ngModel)]="pricePerUnits[i]">
+                    <input matInput type="text" [(ngModel)]="element.pricePerUnit">
                 </mat-form-field>
-            </td>
-        </ng-container>
+            </div>
+        </td>
     </ng-container>
 
-    <ng-container matColumnDef="update">
-        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('update')}}</th>
-        <td mat-cell *matCellDef="let contract; let i = index">
-            <button mat-raised-button color="primary" (click)="updateContract(contract, i)"
-                [disabled]="!editMode">{{this.translationService.getTranslation('update')}}</button>
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <mat-button-toggle color="primary" (click)="changeEditMode(element)" class="editButton"
+                [checked]="element.editMode">
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+            </mat-button-toggle>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="save">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element; let i = index">
+            <mat-button-toggle *ngIf="element.editMode" color="primary" (click)="updateContract(element, i)"
+                class="editButton">
+                <span class="material-symbols-outlined">
+                    save
+                </span>
+            </mat-button-toggle>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="delete">
-        <th mat-header-cell *matHeaderCellDef>{{this.translationService.getTranslation('delete')}}</th>
-        <td mat-cell *matCellDef="let contract">
-            <button mat-raised-button color="primary" (click)="openDialogDeleteContract(contract)"
-                [disabled]="!editMode">{{this.translationService.getTranslation('delete')}}</button>
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let contract; let i = index">
+            <mat-button-toggle *ngIf="contract.editMode" color="primary"
+                (click)="openDialogDeleteContract(contract)"><span class="material-symbols-outlined">
+                    delete
+                </span></mat-button-toggle>
         </td>
     </ng-container>
 

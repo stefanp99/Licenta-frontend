@@ -1,17 +1,6 @@
-.filters {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-}
-
 .searchFormButton {
     margin: 10px;
 }
-
-/* .modifyCells {
-    height: 52px;
-} */
 
 .mat-button-toggle {
     background-color: #7b1fa2;
@@ -27,14 +16,31 @@ mat-form-field {
     align-items: flex-start;
 }
 
-.addContractsButton {
+.filters form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filters mat-form-field {
+    width: calc(33% - 10px);
+}
+
+.button-container {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.editButton {
-    float: right;
+.filter-container {
+    display: flex;
+    justify-content: center;
+}
+
+.addContractsButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 ::ng-deep .line-broken-tooltip {

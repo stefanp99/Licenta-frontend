@@ -24,7 +24,7 @@ import { Plant } from '../plants/plant';
 })
 export class DeviationsComponent implements OnInit {
   deviationTypes = [{ key: 1, value: 'qtyMinus' }, { key: 2, value: 'qtyPlus' }, { key: 3, value: 'dayMinus' }, { key: 4, value: 'dayPlus' }];
-  displayedColumnsDeviations: string[] = ['creationDate', 'type', 'quantityDiff', 'timeDiff', 'supplierId', 'materialCode', 'pricePerUnit', 'plantId'];
+  displayedColumnsDeviations: string[] = ['supplierId', 'materialCode', 'plantId', 'pricePerUnit', 'type', 'creationDate', 'quantityDiff', 'timeDiff'];
   private deviationByTypeSupplierMaterialPlantsUrl = 'http://localhost:8080/deviations/by-type-supplier-material-plant';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';

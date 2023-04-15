@@ -6,5 +6,6 @@ export interface Contract {
     supplier: Supplier,
     materialCode: string,
     pricePerUnit: number,
-    plant: Plant
+    plant: Plant,
+    editMode: boolean,
 }

@@ -50,11 +50,7 @@ export class ContractsComponent implements OnInit {
   dataSourceContracts = new MatTableDataSource([]);
   getContractsFormGroup: FormGroup;
   addContractsFormGroup: FormGroup;
-  displayedColumnsContracts: string[] = ['supplierId', 'supplierName', 'materialCode', 'plantId', 'pricePerUnit', 'update', 'delete'];
-  materialCodes: string[] = [];
-  plantIds: string[] = [];
-  pricePerUnits: number[] = [];
-  editMode: boolean = false;
+  displayedColumnsContracts: string[] = ['supplierId', 'supplierName', 'materialCode', 'plantId', 'pricePerUnit', 'edit', 'save', 'delete'];
   clickedContract: Contract;
   supplierTooltips: SupplierTooltip[];
 
@@ -115,9 +111,8 @@ export class ContractsComponent implements OnInit {
     };
   }
 
-  changeEditMode() {
-    this.editMode = !this.editMode;
-    this.getContracts();
+  changeEditMode(element: Contract) {
+    element.editMode = !element.editMode;
   }
 
   getContracts() {
@@ -131,11 +126,6 @@ export class ContractsComponent implements OnInit {
         this.allContracts = response;
         this.dataSourceContracts.data = this.allContracts;
         this.dataSourceContracts.sort = this.sort;
-        this.allContracts.forEach(contract => {
-          this.materialCodes[this.allContracts.indexOf(contract)] = contract.materialCode;
-          this.plantIds[this.allContracts.indexOf(contract)] = contract.plant.id;
-          this.pricePerUnits[this.allContracts.indexOf(contract)] = contract.pricePerUnit;
-        });
       },
       error => {
         console.error(error);
@@ -225,10 +215,6 @@ export class ContractsComponent implements OnInit {
   }
 
   updateContract(contract: Contract, i: number) {
-    contract.materialCode = this.materialCodes[i];
-    contract.plant.id = this.plantIds[i];
-    contract.pricePerUnit = this.pricePerUnits[i];
-
     const httpParams: HttpParams = new HttpParams()
       .set('id', contract.id)
       .set('plantId', contract.plant.id)

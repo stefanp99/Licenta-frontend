@@ -213,16 +213,20 @@
                 <option value="all">{{this.translationService.getTranslation('all')}}</option>
             </select>
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="searchDeliveries()"
-            class="searchFormButton">{{this.translationService.getTranslation('searchDelivery')}}</button>
-        <button mat-raised-button color="warn" (click)="clearForms()"
-            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        <div class="button-container">
+            <button mat-raised-button color="primary" (click)="searchDeliveries()"
+                class="searchFormButton">{{this.translationService.getTranslation('searchDelivery')}}</button>
+            <button mat-raised-button color="warn" (click)="clearForms()"
+                class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        </div>
     </form>
     <br />
-    <mat-form-field appearance="outline">
-        <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
-        <input matInput (keyup)="applyFilterDeliveries($event)" placeholder="Ex. ium" #input>
-    </mat-form-field>
+    <div class="filter-container">
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
+            <input matInput (keyup)="applyFilterDeliveries($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+    </div>
 </div>
 <table mat-table [dataSource]="dataSourceDeliveries" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8" matSortActive="expectedDeliveryDate" matSortDirection="asc">

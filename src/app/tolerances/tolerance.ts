@@ -8,5 +8,6 @@ export interface Tolerance {
     qtyLowerLimit: number,
     dayUpperLimit: number,
     dayLowerLimit: number,
-    plantId: string
+    plantId: string,
+    editMode: boolean,
 }

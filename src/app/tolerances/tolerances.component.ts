@@ -5,16 +5,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from "../../environments/environment";
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatOption } from '@angular/material/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Tolerance } from './tolerance';
 import { Plant } from '../plants/plant';
 import { Supplier } from '../suppliers/supplier';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { MatFormField } from '@angular/material/form-field';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpHeadersService } from '../http-headers-service';
 import { TranslationService } from '../language-changer/translation-service';
@@ -50,14 +47,7 @@ export class TolerancesComponent implements OnInit {
   dataSourceTolerances = new MatTableDataSource([]);
   getTolerancesFormGroup: FormGroup;
   addTolerancesFormGroup: FormGroup;
-  displayedColumnsTolerances: string[] = ['supplierId', 'supplierName', 'materialCode', 'plantId', 'qtyUpperLimit', 'qtyLowerLimit', 'dayUpperLimit', 'dayLowerLimit', 'update', 'delete'];
-  materialCodes: string[] = [];
-  plantIds: string[] = [];
-  qtyUpperLimits: number[] = [];
-  qtyLowerLimits: number[] = [];
-  dayUpperLimits: number[] = [];
-  dayLowerLimits: number[] = [];
-  editMode: boolean = false;
+  displayedColumnsTolerances: string[] = ['supplierId', 'supplierName', 'materialCode', 'plantId', 'qtyUpperLimit', 'qtyLowerLimit', 'dayUpperLimit', 'dayLowerLimit', 'edit', 'save', 'delete'];
   clickedTolerance: Tolerance;
   supplierTooltips: SupplierTooltip[];
 
@@ -121,9 +111,8 @@ export class TolerancesComponent implements OnInit {
     };
   }
 
-  changeEditMode() {
-    this.editMode = !this.editMode;
-    this.getTolerances();
+  changeEditMode(element: Tolerance) {
+    element.editMode = !element.editMode;
   }
 
   getTolerances() {
@@ -142,12 +131,6 @@ export class TolerancesComponent implements OnInit {
             tolerance.materialCode = 'all';
           if (tolerance.plantId === '%')
             tolerance.plantId = 'all';
-          this.materialCodes[this.allTolerances.indexOf(tolerance)] = tolerance.materialCode;
-          this.plantIds[this.allTolerances.indexOf(tolerance)] = tolerance.plantId;
-          this.qtyUpperLimits[this.allTolerances.indexOf(tolerance)] = tolerance.qtyUpperLimit;
-          this.qtyLowerLimits[this.allTolerances.indexOf(tolerance)] = tolerance.qtyLowerLimit;
-          this.dayUpperLimits[this.allTolerances.indexOf(tolerance)] = tolerance.dayUpperLimit;
-          this.dayLowerLimits[this.allTolerances.indexOf(tolerance)] = tolerance.dayLowerLimit;
         });
       },
       error => {
@@ -258,12 +241,6 @@ export class TolerancesComponent implements OnInit {
   }
 
   updateTolerance(tolerance: Tolerance, i: number) {
-    tolerance.materialCode = this.materialCodes[i];
-    tolerance.plantId = this.plantIds[i];
-    tolerance.qtyUpperLimit = this.qtyUpperLimits[i];
-    tolerance.qtyLowerLimit = this.qtyLowerLimits[i];
-    tolerance.dayUpperLimit = this.dayUpperLimits[i];
-    tolerance.dayLowerLimit = this.dayLowerLimits[i];
 
     const httpParams: HttpParams = new HttpParams()
       .set('id', tolerance.id)

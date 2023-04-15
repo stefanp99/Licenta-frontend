@@ -45,26 +45,30 @@
                 placeholder="{{this.translationService.getTranslation('materialCode')}}">
         </mat-form-field>
 
-        <form [formGroup]="selectTypesFormGroup">
-            <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline">
+            <form [formGroup]="selectTypesFormGroup">
                 <mat-select placeholder="{{this.translationService.getTranslation('deviationTypes')}}"
                     formControlName="deviationType" multiple>
                     <mat-option *ngFor="let type of deviationTypes" [value]="type.key"
                         (click)="togglePerOne(allSelected.viewValue)">{{type.value}}</mat-option>
                     <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">All</mat-option>
                 </mat-select>
-            </mat-form-field>
-        </form>
-        <button mat-raised-button color="primary" (click)="searchDeviations()"
-            class="searchFormButton">{{this.translationService.getTranslation('searchDeviation')}}</button>
-        <button mat-raised-button color="warn" (click)="clearForms()"
-            class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+            </form>
+        </mat-form-field>
+        <div class="button-container">
+            <button mat-raised-button color="primary" (click)="searchDeviations()"
+                class="searchFormButton">{{this.translationService.getTranslation('searchDeviation')}}</button>
+            <button mat-raised-button color="warn" (click)="clearForms()"
+                class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        </div>
     </form>
     <br />
-    <mat-form-field appearance="outline">
-        <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
-        <input matInput (keyup)="applyFilterDeviations($event)" placeholder="Ex. ium" #input>
-    </mat-form-field>
+    <div class="filter-container">
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
+            <input matInput (keyup)="applyFilterDeviations($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+    </div>
 </div>
 <table mat-table [dataSource]="dataSourceDeviations" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8" matSortActive="creationDate" matSortDirection="desc">

@@ -4,11 +4,25 @@ mat-form-field {
     align-items: flex-start;
 }
 
-.filters {
+.filters form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filters mat-form-field {
+    width: calc(25% - 10px);
+}
+
+.button-container {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 25%;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
 }
 
 .addDeliveryButton {

@@ -1,5 +1,5 @@
 //TODO: add reset password button
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from "../../environments/environment";
@@ -8,6 +8,10 @@ import { TranslationService } from '../language-changer/translation-service';
 import { SystemConfigurationsComponent } from '../system-configurations/system-configurations.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SystemConfiguration } from '../system-configurations/system-configuration';
+import { DeliveriesComponent } from '../deliveries/deliveries.component';
+import { DeviationsComponent } from '../deviations/deviations.component';
+import { TolerancesComponent } from '../tolerances/tolerances.component';
+import { ContractsComponent } from '../contracts/contracts.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +19,13 @@ import { SystemConfiguration } from '../system-configurations/system-configurati
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild(DeliveriesComponent) deliveriesComponent: DeliveriesComponent;
+  @ViewChild(DeviationsComponent) deviationsComponent: DeviationsComponent;
+  @ViewChild(TolerancesComponent) tolerancesComponent: TolerancesComponent;
+  @ViewChild(ContractsComponent) contractsComponent: ContractsComponent;
+
+  selectedTabIndex = 0;
+
   private logoutUrl = 'http://localhost:8080/auth/logout';
   private loggedUserUrl = 'http://localhost:8080/users/logged-user-dto';
 
@@ -53,6 +64,10 @@ export class DashboardComponent implements OnInit {
         localStorage.clear();
         this.router.navigate(['/authenticate']);
       });
+  }
+
+  onTabSelection(event) {
+    this.selectedTabIndex = event.index;
   }
 
 }

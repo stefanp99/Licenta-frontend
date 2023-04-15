@@ -1,18 +1,7 @@
-.filters {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-}
-
 .addToleranceFormButton {
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
-
-.editButton {
-    float: right;
 }
 
 .searchFormButton {
@@ -21,7 +10,7 @@
 
 .modifyCells {
     width: 120px;
-    /* height: 52px; */
+    /* height: 50px; */
 }
 
 .mat-button-toggle {
@@ -36,6 +25,27 @@ mat-form-field {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.filters form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filters mat-form-field {
+    width: calc(33% - 10px);
+}
+
+.button-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
 }
 
 ::ng-deep .line-broken-tooltip {

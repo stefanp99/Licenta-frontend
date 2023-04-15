@@ -38,8 +38,8 @@ export interface DeliveryData {
   styleUrls: ['./deliveries.component.css']
 })
 export class DeliveriesComponent implements OnInit {
-  displayedColumnsDeliveries: string[] = ['supplierId', 'materialCode', 'addDeliveryDate', 'dispatchDate', 'deliveryDate', 'expectedDeliveryDate',
-    'pricePerUnit', 'plantId', 'realQuantity', 'expectedQuantity', 'status', 'dispatchDelivery'];
+  displayedColumnsDeliveries: string[] = ['supplierId', 'materialCode', 'plantId', 'pricePerUnit', 'addDeliveryDate',
+    'dispatchDate', 'deliveryDate', 'expectedDeliveryDate', 'realQuantity', 'expectedQuantity', 'status', 'dispatchDelivery'];
   displayedColumnsPlants: string[] = ['id', 'segment', 'country', 'city'];
   displayedColumnsContracts: string[] = ['supplierId', 'pricePerUnit'];
   private deliveriesByStatusSupplierMaterialPlantsUrl = 'http://localhost:8080/deliveries/deliveries-by-status-supplier-material-plant';
