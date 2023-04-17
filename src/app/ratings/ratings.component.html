@@ -1,0 +1,232 @@
+<br />
+<mat-divider></mat-divider>
+<br />
+<div class="filters">
+    <form [formGroup]="getRatingsFormGroup">
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('chart')}}
+                <mat-icon> insert_chart_outlined</mat-icon>
+            </mat-label>
+            <select matNativeControl formControlName="chart" (change)="changeChartType($event.target.value)"
+                required="true">
+                <option value="curveCorrectPerc">{{this.translationService.getTranslation('curveCorrectPerc')}}</option>
+                <option value="totalNrDeliveries">{{this.translationService.getTranslation('totalNumberDeliveries')}}
+                </option>
+                <option value="priceDeviation">{{this.translationService.getTranslation('priceDeviation')}}</option>
+                <option value="distanceToPlant">{{this.translationService.getTranslation('distanceToPlant')}}</option>
+                <option value="averageHours">{{this.translationService.getTranslation('averageHours')}}</option>
+                <option value="table">{{this.translationService.getTranslation('table')}}</option>
+            </select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('ratingType')}}
+                <mat-icon>grade</mat-icon>
+            </mat-label>
+            <select matNativeControl formControlName="ratingType" (change)="changeRatingType($event.target.value)"
+                required="true">
+                <option value="global">{{this.translationService.getTranslation('global')}}</option>
+                <option value="material">{{this.translationService.getTranslation('material')}}
+                </option>
+                <option value="plant">{{this.translationService.getTranslation('plant')}}</option>
+                <option value="specific">{{this.translationService.getTranslation('specific')}}</option>
+            </select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('supplierId')}}
+                <span class="material-symbols-outlined">
+                    handshake
+                </span>
+            </mat-label>
+
+            <mat-select #selectedSupplier placeholder="{{this.translationService.getTranslation('supplierId')}}"
+                formControlName="supplierId" multiple="true" required="true">
+                <mat-option [value]="0" (click)="toggleAllSelectionSuppliers()">All</mat-option>
+                <mat-option *ngFor="let id of supplierIds" [value]="id.value">{{id.value}}</mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('plantId')}}
+                <span class="material-symbols-outlined">
+                    factory
+                </span>
+            </mat-label>
+
+            <mat-select #selectedPlant *ngIf="chartType === 'table'"
+                placeholder="{{this.translationService.getTranslation('plantId')}}" formControlName="plantId" multiple>
+                <mat-option [value]="0" (click)="toggleAllSelectionPlants()">All</mat-option>
+                <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
+            </mat-select>
+            <mat-select *ngIf="chartType !== 'table'"
+                placeholder="{{this.translationService.getTranslation('plantId')}}" formControlName="plantId"
+                [required]="(ratingType === 'plant' || chartType === 'distanceToPlant') || ratingType === 'specific'">
+                <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>
+                {{this.translationService.getTranslation('materialCode')}}
+                <mat-icon class="icon">confirmation_number</mat-icon>
+            </mat-label>
+            <input matInput type="text" formControlName="materialCode"
+                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+        </mat-form-field>
+        <div class="button-container">
+            <button mat-raised-button color="primary" (click)="searchRatings()"
+                class="searchFormButton">{{this.translationService.getTranslation('searchRating')}}</button>
+            <button mat-raised-button color="warn" (click)="clearForms()"
+                class="searchFormButton">{{this.translationService.getTranslation('resetSearch')}}</button>
+        </div>
+
+    </form>
+    <br />
+    <div *ngIf="chartType === 'table'" class="filter-container">
+        <mat-form-field appearance="outline">
+            <mat-label>{{this.translationService.getTranslation('filter')}}</mat-label>
+            <input matInput (keyup)="applyFilterRatings($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+    </div>
+</div>
+<div class="charts">
+    <div *ngIf="multi">
+        <div *ngIf="chartType === 'curveCorrectPerc' || chartType === 'averageHours'">
+            <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
+                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle" (select)="onSelect($event)" (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)">
+            </ngx-charts-bar-vertical-2d>
+        </div>
+        <div
+            *ngIf="chartType === 'totalNrDeliveries' || chartType === 'priceDeviation' || chartType === 'distanceToPlant'">
+            <ngx-charts-bar-vertical [scheme]="colorScheme" [results]="multi" [gradient]="gradient" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                (select)="onSelect($event)">
+            </ngx-charts-bar-vertical>
+        </div>
+    </div>
+    <div *ngIf="chartType === 'table'">
+        <table mat-table [dataSource]="dataSourceRatings" matSort (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z8">
+
+            <ng-container matColumnDef="supplierId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by supplier ID">
+                    {{this.translationService.getTranslation('supplierId')}}
+                </th>
+                <td mat-cell *matCellDef="let rating" matTooltip="{{getSupplierToolTip(rating.supplier.id)}}"
+                    [matTooltipClass]="'line-broken-tooltip'" [matTooltipPosition]="'right'">
+                    {{rating.supplier.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="materialCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by material code">
+                    {{this.translationService.getTranslation('materialCode')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.materialCode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="plantId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by plant ID">
+                    {{this.translationService.getTranslation('plantId')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.plantId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qtyDeviationCurveRating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by qty deviation curve rating">
+                    {{this.translationService.getTranslation('qtyDeviationCurveRating')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.qtyDeviationCurveRating}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dayDeviationCurveRating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by day deviation curve rating">
+                    {{this.translationService.getTranslation('dayDeviationCurveRating')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.dayDeviationCurveRating}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qtyNrDevisRating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by qty nr deviations rating">
+                    {{this.translationService.getTranslation('qtyNrDevisRating')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.qtyNrDevisRating}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dayNrDevisRating">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by day nr deviations rating">
+                    {{this.translationService.getTranslation('dayNrDevisRating')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.dayNrDevisRating}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalNumberDeliveries">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by total number deliveries">
+                    {{this.translationService.getTranslation('totalNumberDeliveries')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.totalNumberDeliveries}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="correctDeliveriesPercentage">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by correct deliveries percentage">
+                    {{this.translationService.getTranslation('correctDeliveriesPercentage')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.correctDeliveriesPercentage}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="priceDeviationPercentage">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by price deviation percentage">
+                    {{this.translationService.getTranslation('priceDeviation')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.priceDeviationPercentage}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="averageNumberOfHoursToDeliver">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by average number of hours to deliver">
+                    {{this.translationService.getTranslation('averageNumberOfHoursToDeliver')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.averageNumberOfHoursToDeliver}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="averageLeadTimeInHours">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                    sortActionDescription="Sort by average lead time in hours">
+                    {{this.translationService.getTranslation('averageLeadTimeInHours')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.averageLeadTimeInHours}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="distanceToPlant">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by distance to plant">
+                    {{this.translationService.getTranslation('distanceToPlant')}}
+                </th>
+                <td mat-cell *matCellDef="let rating"> {{rating.distanceToPlant}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsRatings"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsRatings;"></tr>
+        </table>
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
+            [showFirstLastButtons]=true>
+        </mat-paginator>
+    </div>
+</div>

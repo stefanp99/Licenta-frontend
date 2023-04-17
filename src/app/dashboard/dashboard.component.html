@@ -43,4 +43,9 @@
             <app-contracts *ngIf="selectedTabIndex === 3"></app-contracts>
         </ng-template>
     </mat-tab>
+    <mat-tab label="{{this.translationService.getTranslation('ratingsLabel')}}">
+        <ng-template matTabContent>
+            <app-ratings *ngIf="selectedTabIndex === 4"></app-ratings>
+        </ng-template>
+    </mat-tab>
 </mat-tab-group>

@@ -41,6 +41,8 @@ import { HttpHeadersService } from './http-headers-service';
 import { LanguageChangerComponent } from './language-changer/language-changer.component';
 import { SystemConfigurationsComponent } from './system-configurations/system-configurations.component';
 import { ConfigValuesTablePipe } from './system-configurations/config-values-table.pipe';
+import { RatingsComponent } from './ratings/ratings.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 @NgModule({
@@ -60,6 +62,7 @@ import { ConfigValuesTablePipe } from './system-configurations/config-values-tab
     LanguageChangerComponent,
     SystemConfigurationsComponent,
     ConfigValuesTablePipe,
+    RatingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +92,7 @@ import { ConfigValuesTablePipe } from './system-configurations/config-values-tab
     MatDividerModule,
     MatExpansionModule,
     MatTooltipModule,
+    NgxChartsModule,
   ],
   providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]
