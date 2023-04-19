@@ -43,6 +43,7 @@ import { SystemConfigurationsComponent } from './system-configurations/system-co
 import { ConfigValuesTablePipe } from './system-configurations/config-values-table.pipe';
 import { RatingsComponent } from './ratings/ratings.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatExpansionModule,
     MatTooltipModule,
     NgxChartsModule,
+    MatProgressBarModule
   ],
   providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]

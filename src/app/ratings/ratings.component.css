@@ -36,3 +36,9 @@ mat-form-field {
 .searchFormButton {
     margin: 10px;
 }
+
+.calculateRatingsButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

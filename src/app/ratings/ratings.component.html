@@ -1,3 +1,22 @@
+<ng-template #dialogCalculateRatings>
+    <h1 mat-dialog-title>{{this.translationService.getTranslation('calculateRatingsTitle')}}</h1>
+    <div mat-dialog-content>
+        {{this.translationService.getTranslation('calculateRatingsQuestion')}}
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn"
+            mat-dialog-close>{{this.translationService.getTranslation('no')}}</button>
+        <button mat-raised-button color="primary" mat-dialog-close
+            (click)="calculateRatings()">{{this.translationService.getTranslation('yes')}}</button>
+    </div>
+</ng-template>
+
+<br />
+<mat-divider></mat-divider>
+<mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+<br />
+<button mat-raised-button color="primary" (click)="openDialogCalculateRatings()"
+    class="calculateRatingsButton">{{this.translationService.getTranslation('calculateRatings')}}</button>
 <br />
 <mat-divider></mat-divider>
 <br />

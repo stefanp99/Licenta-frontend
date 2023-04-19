@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { SupplierTooltip } from '../suppliers/supplierTooltip';
 import { MatSelect } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class RatingsComponent implements OnInit {
   private getRatingsUrl = 'http://localhost:8080/ratings/by-supplier-material-plant-type';
   private getSuppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
   private getPlantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
+  private calculateRatingsUrl = 'http://localhost:8080/ratings/calculateRatings'
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   dataSourceRatings = new MatTableDataSource([]);
   getRatingsFormGroup: FormGroup;
@@ -40,6 +42,7 @@ export class RatingsComponent implements OnInit {
   ratingType: string;
   allSelectedSupplier = false;
   allSelectedPlant = false;
+  isLoading = false;
 
   multi: any[];
   view: any[] = [];
@@ -62,9 +65,11 @@ export class RatingsComponent implements OnInit {
   @ViewChild('selectedPlant') selectedPlant: MatSelect;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('dialogCalculateRatings') dialogCalculateRatings: any;
 
   constructor(public translationService: TranslationService, private http: HttpClient,
-    private httpHeadersService: HttpHeadersService, private _liveAnnouncer: LiveAnnouncer) {
+    private httpHeadersService: HttpHeadersService, private _liveAnnouncer: LiveAnnouncer,
+    private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -88,11 +93,35 @@ export class RatingsComponent implements OnInit {
     }
   }
 
+  openDialogCalculateRatings() {
+    const dialogRef = this.dialog.open(this.dialogCalculateRatings, {
+      width: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  calculateRatings() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.isLoading = true;
+    this.http.post<any>(this.calculateRatingsUrl, options).subscribe(
+      response => {
+        this.isLoading = false;
+      },
+      error => {
+        console.error(error);
+      }
+    )
+  }
+
   searchRatings() {
     this.getRatings();
   }
 
   getRatings() {
+    this.xAxisLabel = this.translationService.getTranslation('supplierId');
     const httpParams: HttpParams = new HttpParams()
       .set('supplierId', this.getRatingsFormGroup.value.supplierId)
       .set('materialCode', this.getRatingsFormGroup.value.materialCode)
@@ -134,7 +163,10 @@ export class RatingsComponent implements OnInit {
               break;
             }
           }
-          this.multi = response;
+          if (this.chartType === 'curveCorrectPerc' || this.chartType === 'averageHours')
+            this.multi = this.translateResponse(response);
+          else
+            this.multi = response;
         }
       },
       error => {
@@ -257,6 +289,16 @@ export class RatingsComponent implements OnInit {
   }
 
   onDeactivate(data): void {
+  }
+
+  private translateResponse(response) {
+    response.forEach(element => {
+      let series = element.series;
+      series.forEach(serie => {
+        serie.name = this.translationService.getTranslation(serie.name);
+      });
+    });
+    return response;
   }
 
   toggleAllSelectionSuppliers() {
