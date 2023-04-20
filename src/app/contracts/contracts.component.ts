@@ -83,22 +83,6 @@ export class ContractsComponent implements OnInit {
     this.getContracts();
     this.getPlants();
     this.getSuppliers();
-    this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterSuppliers(value || '')),
-    );
-    this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterPlants(value || '')),
-    );
-    this.filteredOptionsSuppliersAdd = this.myControlSuppliersAdd.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterSuppliers(value || '')),
-    );
-    this.filteredOptionsPlantsAdd = this.myControlPlantsAdd.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterPlants(value || '')),
-    );
     this.dataSourceContracts.sortingDataAccessor = (contract, property) => {
       switch (property) {
         case 'supplierId':
@@ -142,6 +126,14 @@ export class ContractsComponent implements OnInit {
         this.plants.forEach(plant => {
           this.optionsPlants.push(plant.id);
         });
+        this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterPlants(value || '')),
+        );
+        this.filteredOptionsPlantsAdd = this.myControlPlantsAdd.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterPlants(value || '')),
+        );
         // this.dataSourcePlants.data = this.plants;
         // this.dataSourcePlants.sort = this.sort;
       },
@@ -160,6 +152,14 @@ export class ContractsComponent implements OnInit {
         this.suppliers.forEach(supplier => {
           this.optionsSuppliers.push(supplier.id);
         });
+        this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterSuppliers(value || '')),
+        );
+        this.filteredOptionsSuppliersAdd = this.myControlSuppliersAdd.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterSuppliers(value || '')),
+        );
         // this.dataSourcePlants.data = this.plants;
         // this.dataSourcePlants.sort = this.sort;
       },

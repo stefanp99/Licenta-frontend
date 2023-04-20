@@ -107,7 +107,7 @@
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumnsPlants"></tr>
                     <tr mat-row (click)="clickedPlant = row" *matRowDef="let row; columns: displayedColumnsPlants;"
-                        [class.selected]="clickedPlant === row">
+                        [ngClass]="{'selected': clickedPlant === row}">
                     </tr>
                 </table>
             </mat-step>

@@ -42,7 +42,7 @@ mat-form-field {
 }
 
 .selected {
-    background-color: #21216c;
+    background-color: #696c21;
 }
 
 ::ng-deep .line-broken-tooltip {

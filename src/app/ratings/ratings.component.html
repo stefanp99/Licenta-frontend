@@ -32,9 +32,17 @@
                 <option value="curveCorrectPerc">{{this.translationService.getTranslation('curveCorrectPerc')}}</option>
                 <option value="totalNrDeliveries">{{this.translationService.getTranslation('totalNumberDeliveries')}}
                 </option>
+                <option value="totalNrDeliveriesPieChart">
+                    {{this.translationService.getTranslation('totalNrDeliveriesPieChart')}}</option>
                 <option value="priceDeviation">{{this.translationService.getTranslation('priceDeviation')}}</option>
                 <option value="distanceToPlant">{{this.translationService.getTranslation('distanceToPlant')}}</option>
                 <option value="averageHours">{{this.translationService.getTranslation('averageHours')}}</option>
+                <option value="quantityBySupplierMaterialPlant">
+                    {{this.translationService.getTranslation('quantityBySupplierMaterialPlant')}}</option>
+                <option value="totalQuantityBySupplierMaterialPlant">
+                    {{this.translationService.getTranslation('totalQuantityBySupplierMaterialPlant')}}</option>
+                <option value="totalQuantityNoDays">
+                    {{this.translationService.getTranslation('totalQuantityNoDays')}}</option>
                 <option value="table">{{this.translationService.getTranslation('table')}}</option>
             </select>
         </mat-form-field>
@@ -133,6 +141,19 @@
                 [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
                 (select)="onSelect($event)">
             </ngx-charts-bar-vertical>
+        </div>
+        <div
+            *ngIf="chartType === 'quantityBySupplierMaterialPlant' || chartType === 'totalQuantityBySupplierMaterialPlant'">
+            <ngx-charts-line-chart [scheme]="colorScheme" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxis]="showXAxis" [yAxis]="showYAxis" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" [timeline]="timeline" [gradient]="gradient" [results]="multi"
+                (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-line-chart>
+        </div>
+        <div *ngIf="chartType === 'totalNrDeliveriesPieChart' || chartType === 'totalQuantityNoDays'">
+            <ngx-charts-advanced-pie-chart [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
+                (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+            </ngx-charts-advanced-pie-chart>
         </div>
     </div>
     <div *ngIf="chartType === 'table'">

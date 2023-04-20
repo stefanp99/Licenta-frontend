@@ -157,6 +157,10 @@ export class TranslationService {
             calculateRatings: 'Calculate ratings',
             calculateRatingsTitle: 'Calculate ratings',
             calculateRatingsQuestion: 'Are you sure you want to recalculate ratings? This will delete existing ratings.',
+            quantityBySupplierMaterialPlant: 'Delivered quantity by day',
+            totalQuantityBySupplierMaterialPlant: 'Total delivered quantity by day',
+            totalNrDeliveriesPieChart: 'Total number of deliveries - pie chart',
+            totalQuantityNoDays: 'Total delivered quantity',
         },
         ro: {
             loginUsernameLabel: 'Nume utilizator',
@@ -311,6 +315,10 @@ export class TranslationService {
             calculateRatings: 'Calculează evaluările',
             calculateRatingsTitle: 'Calculare evaluări',
             calculateRatingsQuestion: 'Sunteți sigur că doriți să recalculați evaluările? Acest lucru va șterge evaluările existente.',
+            quantityBySupplierMaterialPlant: 'Cantitate livrată în fiecare zi',
+            totalQuantityBySupplierMaterialPlant: 'Cantitate totală livrată în fiecare zi',
+            totalNrDeliveriesPieChart: 'Număr total de livrări - pie chart',
+            totalQuantityNoDays: 'Cantitate totală livrată',
         }
     };
 

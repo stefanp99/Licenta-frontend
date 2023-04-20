@@ -100,14 +100,6 @@ export class DeliveriesComponent implements OnInit {
     this.getDeliveries('undispatched');
     this.getPlants();
     this.getSuppliers();
-    this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterSuppliers(value || '')),
-    );
-    this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterPlants(value || '')),
-    );
     this.getAllSupplierToolTips();
     this.firstFormGroup = new FormGroup({
       expectedQuantity: new FormControl(null, []),
@@ -144,6 +136,10 @@ export class DeliveriesComponent implements OnInit {
         this.plants.forEach(plant => {
           this.optionsPlants.push(plant.id);
         });
+        this.filteredOptionsPlants = this.myControlPlants.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterPlants(value || '')),
+        );
       },
       error => {
         console.error(error);
@@ -160,6 +156,10 @@ export class DeliveriesComponent implements OnInit {
         this.suppliers.forEach(supplier => {
           this.optionsSuppliers.push(supplier.id);
         });
+        this.filteredOptionsSuppliers = this.myControlSuppliers.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterSuppliers(value || '')),
+        );
         // this.dataSourcePlants.data = this.plants;
         // this.dataSourcePlants.sort = this.sort;
       },

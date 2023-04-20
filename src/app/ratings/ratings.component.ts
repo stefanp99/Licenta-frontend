@@ -55,8 +55,12 @@ export class RatingsComponent implements OnInit {
   showXAxisLabel: boolean = true;
   xAxisLabel: string;
   showYAxisLabel: boolean = true;
+  timeline: boolean = true;
   yAxisLabel: string;
   legendTitle: string;
+  legendPosition: string = 'right';
+  isDoughnut: boolean = false;
+  showLabels: boolean = true;
   colorScheme = {
     domain: ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'black', 'white', 'gray', 'brown', 'beige', 'turquoise', 'gold', 'silver', 'navy', 'maroon', 'olive', 'teal', 'magenta']
   };
