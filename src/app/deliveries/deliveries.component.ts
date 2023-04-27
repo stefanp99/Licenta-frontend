@@ -50,8 +50,10 @@ export class DeliveriesComponent implements OnInit {
   private deliverUrl = 'http://localhost:8080/deliveries/deliver-delivery';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
+  private getMaterialsUrl = 'http://localhost:8080/contracts/allMaterialCodes';
   orders: Delivery[];
   plants: Plant[];
+  materials: string[];
   suppliers: Supplier[];
   contracts: Contract[];
   dataSourceDeliveries = new MatTableDataSource([]);
@@ -64,10 +66,13 @@ export class DeliveriesComponent implements OnInit {
   getDeliveriesFormGroup: FormGroup;
   optionsSuppliers: string[] = [];
   optionsPlants: string[] = [];
+  optionsMaterials: string[] = [];
   myControlSuppliers = new FormControl('');
   myControlPlants = new FormControl('');
+  myControlMaterials = new FormControl('');
   filteredOptionsSuppliers: Observable<string[]>;
   filteredOptionsPlants: Observable<string[]>;
+  filteredOptionsMaterials: Observable<string[]>;
 
   firstFormGroup: FormGroup;
   realQuantityFormGroup: FormGroup;
@@ -100,6 +105,7 @@ export class DeliveriesComponent implements OnInit {
     this.getDeliveries('undispatched');
     this.getPlants();
     this.getSuppliers();
+    this.getMaterials();
     this.getAllSupplierToolTips();
     this.firstFormGroup = new FormGroup({
       expectedQuantity: new FormControl(null, []),
@@ -162,6 +168,26 @@ export class DeliveriesComponent implements OnInit {
         );
         // this.dataSourcePlants.data = this.plants;
         // this.dataSourcePlants.sort = this.sort;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getMaterials() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<string[]>(this.getMaterialsUrl, options).subscribe(
+      response => {
+        this.materials = response;
+        this.materials.forEach(material => {
+          this.optionsMaterials.push(material);
+        });
+        this.filteredOptionsMaterials = this.myControlMaterials.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterMaterials(value || '')),
+        );
       },
       error => {
         console.error(error);
@@ -379,6 +405,11 @@ export class DeliveriesComponent implements OnInit {
   private _filterSuppliers(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.optionsSuppliers.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterMaterials(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsMaterials.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   applyFilterDeliveries(event: Event) {

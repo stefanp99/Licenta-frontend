@@ -136,7 +136,7 @@ export class TranslationService {
             averageNumberOfHoursLeadTime: 'Average number of hours for lead time',
             searchDelivery: 'Search delivery',
             searchDeviation: 'Search deviation',
-            ratingsLabel: 'Ratings',
+            ratingsLabel: 'Charts',
             curveCorrectPerc: 'Deviation ratings and correct deliveries',
             priceDeviation: 'Price deviation',
             distanceToPlant: 'Distance to plant',
@@ -161,6 +161,9 @@ export class TranslationService {
             totalQuantityBySupplierMaterialPlant: 'Total delivered quantity by day',
             totalNrDeliveriesPieChart: 'Total number of deliveries - pie chart',
             totalQuantityNoDays: 'Total delivered quantity',
+            map: 'Map',
+            latitude: 'Latitude',
+            longitude: 'Longitude',
         },
         ro: {
             loginUsernameLabel: 'Nume utilizator',
@@ -293,7 +296,7 @@ export class TranslationService {
             averageNumberOfHoursLeadTime: 'Termenul de livrare mediu in ore',
             searchDelivery: 'Caută livrare',
             searchDeviation: 'Caută deviație',
-            ratingsLabel: 'Evaluări',
+            ratingsLabel: 'Grafice',
             curveCorrectPerc: 'Evaluările deviațiilor și procent livrări corecte',
             priceDeviation: 'Deviația de preț',
             distanceToPlant: 'Distanța de fabrică',
@@ -319,6 +322,9 @@ export class TranslationService {
             totalQuantityBySupplierMaterialPlant: 'Cantitate totală livrată în fiecare zi',
             totalNrDeliveriesPieChart: 'Număr total de livrări - pie chart',
             totalQuantityNoDays: 'Cantitate totală livrată',
+            map: 'Hartă',
+            latitude: 'Latitudine',
+            longitude: 'Longitudine',
         }
     };
 

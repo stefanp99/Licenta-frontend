@@ -39,7 +39,13 @@
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
             <input matInput type="text" formControlName="materialCode"
-                placeholder="{{this.translationService.getTranslation('materialCode')}}" required>
+                placeholder="{{this.translationService.getTranslation('materialCode')}}" required
+                [matAutocomplete]="autoMaterials">
+            <mat-autocomplete #autoMaterials="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsMaterials | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -123,7 +129,13 @@
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
             <input matInput type="text" formControlName="materialCode"
-                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+                placeholder="{{this.translationService.getTranslation('materialCode')}}"
+                [matAutocomplete]="autoMaterials">
+            <mat-autocomplete #autoMaterials="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsMaterials | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
         <div class="button-container">
             <button mat-raised-button color="primary" (click)="searchContracts()"

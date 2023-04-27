@@ -3,5 +3,7 @@ export interface Plant {
     cityCountry: string,
     segment: string,
     country: string,
-    city: string
+    city: string,
+    cityLatitude: number,
+    cityLongitude: number
 }

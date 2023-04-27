@@ -44,6 +44,7 @@
                 <option value="totalQuantityNoDays">
                     {{this.translationService.getTranslation('totalQuantityNoDays')}}</option>
                 <option value="table">{{this.translationService.getTranslation('table')}}</option>
+                <option value="map">{{this.translationService.getTranslation('map')}}</option>
             </select>
         </mat-form-field>
 
@@ -53,7 +54,7 @@
                 <mat-icon>grade</mat-icon>
             </mat-label>
             <select matNativeControl formControlName="ratingType" (change)="changeRatingType($event.target.value)"
-                required="true">
+                [required]="chartType !== 'map'">
                 <option value="global">{{this.translationService.getTranslation('global')}}</option>
                 <option value="material">{{this.translationService.getTranslation('material')}}
                 </option>
@@ -71,7 +72,7 @@
             </mat-label>
 
             <mat-select #selectedSupplier placeholder="{{this.translationService.getTranslation('supplierId')}}"
-                formControlName="supplierId" multiple="true" required="true">
+                formControlName="supplierId" multiple="true" [required]="chartType !== 'map'">
                 <mat-option [value]="0" (click)="toggleAllSelectionSuppliers()">All</mat-option>
                 <mat-option *ngFor="let id of supplierIds" [value]="id.value">{{id.value}}</mat-option>
             </mat-select>
@@ -86,12 +87,12 @@
                 </span>
             </mat-label>
 
-            <mat-select #selectedPlant *ngIf="chartType === 'table'"
+            <mat-select #selectedPlant *ngIf="chartType === 'table' || chartType === 'map'"
                 placeholder="{{this.translationService.getTranslation('plantId')}}" formControlName="plantId" multiple>
                 <mat-option [value]="0" (click)="toggleAllSelectionPlants()">All</mat-option>
                 <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
             </mat-select>
-            <mat-select *ngIf="chartType !== 'table'"
+            <mat-select *ngIf="chartType !== 'table' && chartType !== 'map'"
                 placeholder="{{this.translationService.getTranslation('plantId')}}" formControlName="plantId"
                 [required]="(ratingType === 'plant' || chartType === 'distanceToPlant') || ratingType === 'specific'">
                 <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
@@ -106,7 +107,13 @@
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
             <input matInput type="text" formControlName="materialCode"
-                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+                placeholder="{{this.translationService.getTranslation('materialCode')}}"
+                [matAutocomplete]="autoMaterials">
+            <mat-autocomplete #autoMaterials="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsMaterials | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
         <div class="button-container">
             <button mat-raised-button color="primary" (click)="searchRatings()"
@@ -152,7 +159,8 @@
         </div>
         <div *ngIf="chartType === 'totalNrDeliveriesPieChart' || chartType === 'totalQuantityNoDays'">
             <ngx-charts-advanced-pie-chart [view]="view" [scheme]="colorScheme" [results]="multi" [gradient]="gradient"
-                (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+                (select)="onSelect($event)" (activate)="onActivate($event)" (deactivate)="onDeactivate($event)"
+                class="pieCharts">
             </ngx-charts-advanced-pie-chart>
         </div>
     </div>
@@ -268,5 +276,11 @@
         <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page"
             [showFirstLastButtons]=true>
         </mat-paginator>
+    </div>
+    <div *ngIf="supplierTooltipsForMap && plantsForMap">
+        <div *ngIf="chartType === 'map' && isMapSearched">
+            <app-plants-suppliers-map [supplierTooltipsForMap]="supplierTooltipsForMap"
+                [plantsForMap]="plantsForMap"></app-plants-suppliers-map>
+        </div>
     </div>
 </div>

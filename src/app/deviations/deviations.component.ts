@@ -29,19 +29,24 @@ export class DeviationsComponent implements OnInit {
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
   private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
+  private getMaterialsUrl = 'http://localhost:8080/contracts/allMaterialCodes';
   allDeviations: Deviation[];
   plants: Plant[];
   suppliers: Supplier[];
+  materials: string[];
   dataSourceDeviations = new MatTableDataSource([]);
   selectedTypes: string[] = [];
   supplierTooltips: SupplierTooltip[];
   getDeviationsFormGroup: FormGroup;
   optionsSuppliers: string[] = [];
   optionsPlants: string[] = [];
+  optionsMaterials: string[] = [];
   myControlSuppliers = new FormControl('');
   myControlPlants = new FormControl('');
+  myControlMaterials = new FormControl('');
   filteredOptionsSuppliers: Observable<string[]>;
   filteredOptionsPlants: Observable<string[]>;
+  filteredOptionsMaterials: Observable<string[]>;
 
   selectTypesFormGroup: FormGroup;
 
@@ -87,6 +92,7 @@ export class DeviationsComponent implements OnInit {
     this.getDeviations();
     this.getPlants();
     this.getSuppliers();
+    this.getMaterials();
     this.dataSourceDeviations.sortingDataAccessor = (deviation, property) => {
       switch (property) {
         case 'supplierId':
@@ -175,6 +181,26 @@ export class DeviationsComponent implements OnInit {
     );
   }
 
+  getMaterials() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<string[]>(this.getMaterialsUrl, options).subscribe(
+      response => {
+        this.materials = response;
+        this.materials.forEach(material => {
+          this.optionsMaterials.push(material);
+        });
+        this.filteredOptionsMaterials = this.myControlMaterials.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterMaterials(value || '')),
+        );
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
   searchDeviations() {
     this.getDeviationsFormGroup.value.plantId = this.myControlPlants.value;
     this.getDeviationsFormGroup.value.supplierId = this.myControlSuppliers.value;
@@ -225,6 +251,11 @@ export class DeviationsComponent implements OnInit {
   private _filterSuppliers(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.optionsSuppliers.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterMaterials(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsMaterials.filter(option => option.toLowerCase().includes(filterValue));
   }
 
 

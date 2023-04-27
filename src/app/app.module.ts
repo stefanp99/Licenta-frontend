@@ -44,6 +44,8 @@ import { ConfigValuesTablePipe } from './system-configurations/config-values-tab
 import { RatingsComponent } from './ratings/ratings.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PlantsSuppliersMapComponent } from './plants-suppliers-map/plants-suppliers-map.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
 @NgModule({
@@ -64,6 +66,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     SystemConfigurationsComponent,
     ConfigValuesTablePipe,
     RatingsComponent,
+    PlantsSuppliersMapComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +97,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatExpansionModule,
     MatTooltipModule,
     NgxChartsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    LeafletModule
   ],
   providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]

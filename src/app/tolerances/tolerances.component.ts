@@ -31,9 +31,11 @@ export class TolerancesComponent implements OnInit {
   private plantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
   private suppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
+  private getMaterialsUrl = 'http://localhost:8080/contracts/allMaterialCodes';
   allTolerances: Tolerance[];
   plants: Plant[];
   suppliers: Supplier[];
+  materials: string[];
   myControlSuppliers = new FormControl('');
   optionsSuppliers: string[] = [];
   myControlSuppliersAdd = new FormControl('');
@@ -44,6 +46,9 @@ export class TolerancesComponent implements OnInit {
   myControlPlantsAdd = new FormControl('');
   filteredOptionsPlants: Observable<string[]>;
   filteredOptionsPlantsAdd: Observable<string[]>;
+  optionsMaterials: string[] = [];
+  myControlMaterials = new FormControl('');
+  filteredOptionsMaterials: Observable<string[]>;
   dataSourceTolerances = new MatTableDataSource([]);
   getTolerancesFormGroup: FormGroup;
   addTolerancesFormGroup: FormGroup;
@@ -83,7 +88,7 @@ export class TolerancesComponent implements OnInit {
     this.getTolerances();
     this.getPlants();
     this.getSuppliers();
-
+    this.getMaterials();
     this.dataSourceTolerances.sortingDataAccessor = (tolerance, property) => {
       switch (property) {
         case 'supplierId':
@@ -171,6 +176,27 @@ export class TolerancesComponent implements OnInit {
         );
         // this.dataSourcePlants.data = this.plants;
         // this.dataSourcePlants.sort = this.sort;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getMaterials() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<string[]>(this.getMaterialsUrl, options).subscribe(
+      response => {
+        this.materials = response;
+        this.optionsMaterials.push('All');
+        this.materials.forEach(material => {
+          this.optionsMaterials.push(material);
+        });
+        this.filteredOptionsMaterials = this.myControlMaterials.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterMaterials(value || '')),
+        );
       },
       error => {
         console.error(error);
@@ -335,6 +361,11 @@ export class TolerancesComponent implements OnInit {
   private _filterSuppliers(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.optionsSuppliers.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  private _filterMaterials(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsMaterials.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   /** Announce the change in sort state for assistive technology. */

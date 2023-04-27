@@ -42,3 +42,11 @@ mat-form-field {
     margin-left: auto;
     margin-right: auto;
 }
+
+.pieCharts {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+    width: 50%;
+}

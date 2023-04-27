@@ -42,7 +42,13 @@
                 <mat-icon class="icon">confirmation_number</mat-icon>
             </mat-label>
             <input matInput type="text" formControlName="materialCode"
-                placeholder="{{this.translationService.getTranslation('materialCode')}}">
+                placeholder="{{this.translationService.getTranslation('materialCode')}}"
+                [matAutocomplete]="autoMaterials">
+            <mat-autocomplete #autoMaterials="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptionsMaterials | async" [value]="option">
+                    {{option}}
+                </mat-option>
+            </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field appearance="outline">

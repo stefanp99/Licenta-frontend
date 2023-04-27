@@ -14,6 +14,8 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { SupplierTooltip } from '../suppliers/supplierTooltip';
 import { MatSelect } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -28,14 +30,19 @@ export class RatingsComponent implements OnInit {
   private getRatingsUrl = 'http://localhost:8080/ratings/by-supplier-material-plant-type';
   private getSuppliersUrl = 'http://localhost:8080/suppliers/get-suppliers-by-city-country';
   private getPlantsUrl = 'http://localhost:8080/plants/plants-by-city-country-segment';
-  private calculateRatingsUrl = 'http://localhost:8080/ratings/calculateRatings'
+  private getPlantsByIdUrl = 'http://localhost:8080/plants/by-id'
+  private getMaterialsUrl = 'http://localhost:8080/contracts/allMaterialCodes';
+  private calculateRatingsUrl = 'http://localhost:8080/ratings/calculateRatings';
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   dataSourceRatings = new MatTableDataSource([]);
   getRatingsFormGroup: FormGroup;
   ratings: Rating[];
   suppliers: Supplier[];
   plants: Plant[];
+  materials: string[];
   supplierTooltips: SupplierTooltip[];
+  supplierTooltipsForMap: SupplierTooltip[];
+  plantsForMap: Plant[];
   supplierIds: { key: number, value: string }[] = [];
   plantIds: { key: number, value: string }[] = [];
   chartType: string;
@@ -43,6 +50,10 @@ export class RatingsComponent implements OnInit {
   allSelectedSupplier = false;
   allSelectedPlant = false;
   isLoading = false;
+  optionsMaterials: string[] = [];
+  myControlMaterials = new FormControl('');
+  filteredOptionsMaterials: Observable<string[]>;
+  isMapSearched: boolean;
 
   multi: any[];
   view: any[] = [];
@@ -87,6 +98,7 @@ export class RatingsComponent implements OnInit {
     });
     this.getSuppliers();
     this.getPlants();
+    this.getMaterials();
     this.dataSourceRatings.sortingDataAccessor = (rating, property) => {
       switch (property) {
         case 'supplierId':
@@ -121,7 +133,17 @@ export class RatingsComponent implements OnInit {
   }
 
   searchRatings() {
-    this.getRatings();
+    if (this.chartType === 'map') {
+      if (this.isMapSearched)
+        this.isMapSearched = false;
+      this.getSupplierPlantsForMap();
+    }
+    else {
+      this.isMapSearched = false;
+      this.supplierTooltipsForMap = undefined;
+      this.plantsForMap = undefined;
+      this.getRatings();
+    }
   }
 
   getRatings() {
@@ -211,6 +233,26 @@ export class RatingsComponent implements OnInit {
     );
   }
 
+  getMaterials() {
+    const httpParams: HttpParams = new HttpParams();
+    const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<string[]>(this.getMaterialsUrl, options).subscribe(
+      response => {
+        this.materials = response;
+        this.materials.forEach(material => {
+          this.optionsMaterials.push(material);
+        });
+        this.filteredOptionsMaterials = this.myControlMaterials.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterMaterials(value || '')),
+        );
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
   changeRatingType(event) {
     this.multi = null;
     this.ratingType = event;
@@ -247,8 +289,17 @@ export class RatingsComponent implements OnInit {
     else {
       this.getRatingsFormGroup.controls['plantId'].clearValidators();
     }
+    if (this.chartType === 'map') {
+      this.getRatingsFormGroup.controls['ratingType'].clearValidators();
+      this.getRatingsFormGroup.controls['supplierId'].clearValidators();
+    }
+    else {
+      this.getRatingsFormGroup.controls['ratingType'].setValidators(Validators.required);
+    }
     this.getRatingsFormGroup.controls['materialCode'].updateValueAndValidity();
     this.getRatingsFormGroup.controls['plantId'].updateValueAndValidity();
+    this.getRatingsFormGroup.controls['ratingType'].updateValueAndValidity();
+    this.getRatingsFormGroup.controls['supplierId'].updateValueAndValidity();
   }
 
   clearForms() {
@@ -262,6 +313,30 @@ export class RatingsComponent implements OnInit {
     this.http.get<SupplierTooltip[]>(this.tooltipsUrl, options).subscribe(
       response => {
         this.supplierTooltips = response;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  getSupplierPlantsForMap() {
+    let httpParams = new HttpParams().set('supplierId', this.getRatingsFormGroup.get('supplierId').value);
+    let options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+    this.http.get<SupplierTooltip[]>(this.tooltipsUrl, options).subscribe(
+      response => {
+        this.supplierTooltipsForMap = response;
+        httpParams = new HttpParams().set('plantId', this.getRatingsFormGroup.get('plantId').value);
+        options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
+        this.http.get<Plant[]>(this.getPlantsByIdUrl, options).subscribe(
+          response => {
+            this.plantsForMap = response;
+            this.isMapSearched = true;
+          },
+          error => {
+            console.error(error);
+          }
+        );
       },
       error => {
         console.error(error);
@@ -358,6 +433,11 @@ export class RatingsComponent implements OnInit {
       search += data[key];
     }
     return search;
+  }
+
+  private _filterMaterials(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsMaterials.filter(option => option.toLowerCase().includes(filterValue));
   }
 
 }

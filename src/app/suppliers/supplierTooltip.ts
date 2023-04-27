@@ -8,4 +8,6 @@ export interface SupplierTooltip {
     dayDeviationCurveRating: number,
     averageNumberOfHoursToDeliver: number,
     averageLeadTimeInHours: number,
+    cityLatitude: number,
+    cityLongitude: number,
 }
