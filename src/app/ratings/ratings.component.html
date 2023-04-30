@@ -92,11 +92,17 @@
                 <mat-option [value]="0" (click)="toggleAllSelectionPlants()">All</mat-option>
                 <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
             </mat-select>
-            <mat-select *ngIf="chartType !== 'table' && chartType !== 'map'"
-                placeholder="{{this.translationService.getTranslation('plantId')}}" formControlName="plantId"
-                [required]="(ratingType === 'plant' || chartType === 'distanceToPlant') || ratingType === 'specific'">
-                <mat-option *ngFor="let id of plantIds" [value]="id.value">{{id.value}}</mat-option>
-            </mat-select>
+            <div *ngIf="chartType !== 'table' && chartType !== 'map'" class="select-container">
+                <mat-select [(value)]="selectedPlantIdSingleSelection"
+                    placeholder="{{ this.translationService.getTranslation('plantId') }}" formControlName="plantId"
+                    [required]="(ratingType === 'plant' || chartType === 'distanceToPlant') || ratingType === 'specific'">
+                    <mat-option *ngFor="let id of plantIds" [value]="id.value">{{ id.value }}</mat-option>
+                </mat-select>
+                <button mat-icon-button matSuffix *ngIf="selectedPlantIdSingleSelection" aria-label="Clear"
+                    class="clear-button" (click)="selectedPlantIdSingleSelection=undefined; $event.stopPropagation()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
 
         </mat-form-field>
 

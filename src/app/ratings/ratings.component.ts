@@ -47,6 +47,7 @@ export class RatingsComponent implements OnInit {
   plantIds: { key: number, value: string }[] = [];
   chartType: string;
   ratingType: string;
+  selectedPlantIdSingleSelection: string;
   allSelectedSupplier = false;
   allSelectedPlant = false;
   isLoading = false;

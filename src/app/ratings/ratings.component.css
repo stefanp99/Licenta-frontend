@@ -50,3 +50,18 @@ mat-form-field {
     height: 500px;
     width: 50%;
 }
+
+.select-container {
+    display: flex;
+    align-items: center;
+}
+
+mat-select {
+    flex-grow: 1;
+}
+
+.clear-button {
+    height: 24px;
+    width: 24px;
+    margin-left: 8px;
+}

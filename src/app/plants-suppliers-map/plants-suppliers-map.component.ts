@@ -5,6 +5,48 @@ import { Plant } from '../plants/plant';
 import { SupplierTooltip } from '../suppliers/supplierTooltip';
 import { TranslationService } from '../language-changer/translation-service';
 
+class LegendControl extends L.Control {
+  onAdd(map) {
+    const legend = L.DomUtil.create('div', 'legend');
+    legend.innerHTML = `
+    <div style="background-color: black; color: white">
+      <h4 style="text-align: center">Legend</h4>
+      <div style="display: grid; grid-template-columns: repeat(1, 2fr);">
+        <div style="display: flex; align-items: center;">
+          <span style="background-color: red;
+          width: 1rem;
+          height: 1rem;
+          display: block;
+          left: -0.5rem;
+          top: -0.5rem;
+          position: relative;
+          border-radius: 1rem 1rem 0;
+          transform: rotate(45deg);
+          border: 1px solid #FFFFFF"></span>
+          <span class="legend-label">Plants</span>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+          <span style="background-color: blue;
+          width: 1rem;
+          height: 1rem;
+          display: block;
+          left: -0.5rem;
+          top: -0.5rem;
+          position: relative;
+          border-radius: 1rem 1rem 0;
+          transform: rotate(45deg);
+          border: 1px solid #FFFFFF"></span>
+          <span class="legend-label">Suppliers</span>
+        </div>
+      </div>
+    </div>
+
+    `;
+    return legend;
+  }
+}
+
 
 @Component({
   selector: 'app-plants-suppliers-map',
@@ -42,6 +84,9 @@ export class PlantsSuppliersMapComponent implements OnInit, AfterViewInit {
       maxZoom: 20,
       id: 'osm-bright',
     } as any).addTo(lefletMap);
+
+    const legendControl = new LegendControl();
+    legendControl.addTo(lefletMap);
 
     const plantColour = 'red'
 
