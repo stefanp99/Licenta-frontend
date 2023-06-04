@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import { TranslationService } from '../language-changer/translation-service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -16,14 +16,59 @@ import { MatSelect } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import localeRo from '@angular/common/locales/ro';
+import { formatDate, registerLocaleData } from '@angular/common';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 
+
+registerLocaleData(localeRo, 'ro');
+
+
+export const PICK_FORMATS = {
+  parse: { dateInput: { month: 'short', year: 'numeric', day: 'numeric' } },
+  display: {
+    dateInput: 'input',
+    monthYearLabel: { year: 'numeric', month: 'short' },
+    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+    monthYearA11yLabel: { year: 'numeric', month: 'long' }
+  }
+};
+
+@Injectable()
+class PickDateAdapter extends NativeDateAdapter {
+  format(date: Date, displayFormat: Object): string {
+    if (displayFormat === 'input') {
+      return formatDate(date, 'yyyy-MM-dd', 'ro');
+    } else {
+      return date.toDateString();
+    }
+  }
+
+  getFirstDayOfWeek(): number {
+    return 1;
+  }
+}
 
 @Component({
   selector: 'app-ratings',
   templateUrl: './ratings.component.html',
-  styleUrls: ['./ratings.component.css']
+  styleUrls: ['./ratings.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'ro' } // Set the Romanian locale
+  ]
 })
 export class RatingsComponent implements OnInit {
+
+  myFilter = (d: Date | null): boolean => {
+    const date = d || new Date();
+    const today = new Date();
+    today.setDate(today.getDate());
+
+    return date <= today;
+  };
+
   displayedColumnsRatings = ['supplierId', 'materialCode', 'plantId', 'qtyDeviationCurveRating', 'dayDeviationCurveRating',
     'qtyNrDevisRating', 'dayNrDevisRating', 'totalNumberDeliveries', 'correctDeliveriesPercentage', 'priceDeviationPercentage',
     'averageNumberOfHoursToDeliver', 'averageLeadTimeInHours', 'distanceToPlant'];
@@ -36,6 +81,7 @@ export class RatingsComponent implements OnInit {
   private tooltipsUrl = 'http://localhost:8080/suppliers/tooltips';
   dataSourceRatings = new MatTableDataSource([]);
   getRatingsFormGroup: FormGroup;
+  range: FormGroup;
   ratings: Rating[];
   suppliers: Supplier[];
   plants: Plant[];
@@ -97,6 +143,10 @@ export class RatingsComponent implements OnInit {
       ratingType: new FormControl('', [Validators.required]),
       chart: new FormControl('', [Validators.required]),
     });
+    this.range = new FormGroup({
+      start: new FormControl<Date | null>(this.getDefaultStartDate()),
+      end: new FormControl<Date | null>(this.getDefaultEndDate()),
+    });
     this.getSuppliers();
     this.getPlants();
     this.getMaterials();
@@ -108,6 +158,17 @@ export class RatingsComponent implements OnInit {
           return rating[property];
       }
     }
+  }
+
+  getDefaultStartDate(): Date | null {
+    const today = new Date();
+    const weekBefore = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000); // Subtract 7 days
+    return weekBefore;
+  }
+
+  getDefaultEndDate(): Date | null {
+    const today = new Date();
+    return today;
   }
 
   openDialogCalculateRatings() {
@@ -149,12 +210,23 @@ export class RatingsComponent implements OnInit {
 
   getRatings() {
     this.xAxisLabel = this.translationService.getTranslation('supplierId');
-    const httpParams: HttpParams = new HttpParams()
+    let httpParams = new HttpParams()
       .set('supplierId', this.getRatingsFormGroup.value.supplierId)
       .set('materialCode', this.getRatingsFormGroup.value.materialCode)
       .set('plantId', this.getRatingsFormGroup.value.plantId)
       .set('ratingType', this.getRatingsFormGroup.value.ratingType)
       .set('chart', this.getRatingsFormGroup.value.chart);
+
+    if (this.range.value.start !== null && this.range.value.start !== undefined) {
+      let startDate = this.range.value.start;
+      startDate = startDate.toISOString().split('T')[0];
+      httpParams = httpParams.set('startDate', startDate);
+    }
+    if (this.range.value.end !== null && this.range.value.end !== undefined) {
+      let endDate = this.range.value.end;
+      endDate = endDate.toISOString().split('T')[0];
+      httpParams = httpParams.set('endDate', endDate);
+    }
     const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.get<any>(this.getRatingsUrl, options).subscribe(
       response => {
@@ -306,6 +378,7 @@ export class RatingsComponent implements OnInit {
   clearForms() {
     this.multi = null;
     this.getRatingsFormGroup.reset();
+    this.range.reset();
   }
 
   getAllSupplierToolTips() {

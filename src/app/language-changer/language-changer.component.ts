@@ -25,6 +25,14 @@ export class LanguageChangerComponent implements OnInit {
       `icon_us`,
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/us.svg")
     );
+    this.matIconRegistry.addSvgIcon(
+      `icon_de`,
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/de.svg")
+    );
+    this.matIconRegistry.addSvgIcon(
+      `icon_es`,
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/es.svg")
+    );
   }
 
 }

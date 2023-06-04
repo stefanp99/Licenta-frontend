@@ -103,13 +103,11 @@ export class EmailReportGenerateComponent implements OnInit {
   generateMail() {
     let date = this.generateEmailFormGroup.value.date;
     let httpParams = new HttpParams().set('userId', this.data.userId);
-    console.log(date)
 
     if (date !== null && date !== undefined && date !== '') {
       date.setDate(date.getDate() + 1);
       date = date.toISOString().split('T')[0];
       httpParams = httpParams.set('date', date);
-      console.log(httpParams)
     }
     const options = { params: httpParams, headers: this.httpHeadersService.getHttpHeaders() };
     this.http.post<any>(this.generateEmailReportUrl, null, options).subscribe(

@@ -11,7 +11,7 @@ mat-form-field {
 }
 
 .filters mat-form-field {
-    width: calc(20% - 10px);
+    width: calc(17% - 10px);
 }
 
 .button-container {
