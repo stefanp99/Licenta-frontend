@@ -18,10 +18,12 @@
     </ul>
     <button mat-raised-button color="primary"
         (click)="openDialogSystemConfigurations()">{{this.translationService.getTranslation('systemConfigurations')}}</button>
+
+    <button mat-raised-button color="primary"
+        (click)="openDialogReceiveEmail()">{{this.translationService.getTranslation('generateEmailReport')}}</button>
 </mat-expansion-panel>
 
 <br /><br />
-<!-- TODO: initialize each component when selecting tabs -->
 <mat-tab-group (selectedTabChange)="onTabSelection($event)">
     <mat-tab label="{{this.translationService.getTranslation('deliveriesLabel')}}">
         <ng-template matTabContent>

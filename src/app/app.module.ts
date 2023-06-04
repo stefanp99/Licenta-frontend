@@ -46,6 +46,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PlantsSuppliersMapComponent } from './plants-suppliers-map/plants-suppliers-map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { EmailReportGenerateComponent } from './email-report-generate/email-report-generate.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -67,6 +70,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     ConfigValuesTablePipe,
     RatingsComponent,
     PlantsSuppliersMapComponent,
+    EmailReportGenerateComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,7 +102,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     MatTooltipModule,
     NgxChartsModule,
     MatProgressBarModule,
-    LeafletModule
+    LeafletModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [HttpHeadersService, DeviationsComponent],
   bootstrap: [AppComponent]

@@ -12,6 +12,7 @@ import { DeliveriesComponent } from '../deliveries/deliveries.component';
 import { DeviationsComponent } from '../deviations/deviations.component';
 import { TolerancesComponent } from '../tolerances/tolerances.component';
 import { ContractsComponent } from '../contracts/contracts.component';
+import { EmailReportGenerateComponent } from '../email-report-generate/email-report-generate.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -47,6 +48,14 @@ export class DashboardComponent implements OnInit {
 
   openDialogSystemConfigurations() {
     const dialogRef = this.dialog.open(SystemConfigurationsComponent, {});
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  openDialogReceiveEmail() {
+    const dialogRef = this.dialog.open(EmailReportGenerateComponent, { data: { userId: this.userDetails.id } });
 
     dialogRef.afterClosed().subscribe(result => {
 
