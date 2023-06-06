@@ -640,7 +640,7 @@ export class TranslationService {
             priceWeight: 'Pondere pentru diferențele de preț',
             age: 'Vârstă',
             addDeliveryDate: 'Data adaugarii livrarii',
-            averageNumberOfHoursLeadTime: 'Termenul de livrare mediu in ore',
+            averageNumberOfHoursLeadTime: 'Timpul de livrare mediu in ore',
             searchDelivery: 'Caută livrare',
             searchDeviation: 'Caută deviație',
             ratingsLabel: 'Statistici',
