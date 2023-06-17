@@ -240,7 +240,7 @@
 
     <ng-container matColumnDef="qtyUpperLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Upper Limit">
-            {{this.translationService.getTranslation('qtyUpperLimit')}}({{this.translationService.getTranslation('days')}})
+            {{this.translationService.getTranslation('qtyUpperLimit')}}(%)
         </th>
         <td mat-cell *matCellDef="let tolerance; let i = index;">
             <div *ngIf="!tolerance.editMode">
@@ -257,7 +257,7 @@
 
     <ng-container matColumnDef="qtyLowerLimit">
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Qty Lower Limit">
-            {{this.translationService.getTranslation('qtyLowerLimit')}}({{this.translationService.getTranslation('days')}})
+            {{this.translationService.getTranslation('qtyLowerLimit')}}(%)
         </th>
         <td mat-cell *matCellDef="let tolerance; let i = index;">
             <div *ngIf="!tolerance.editMode">
