@@ -1,27 +1,10 @@
-# SuppRelFrontend
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.12.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+The frontend of my undergraduate project. 
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/3a825e08-d650-434c-872b-9c391230b4ce)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/f749f6ba-d15e-48c4-9947-f3656a8445c7)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/b00b3fff-817a-47c0-85ec-1eb2e9160da2)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/a6165f49-17c9-433a-9f3b-cec33775ac8e)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/9f6d0885-febb-4299-855f-fd294b5c3db7)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/4593684a-12f1-48f4-99b1-ed47b0be46f1)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/909eba79-eab1-4fd1-8192-36b9e3887b60)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/e176df13-8ec8-4de3-b4b3-24503feb3895)
+![image](https://github.com/stefanp99/Licenta-frontend/assets/34790158/27468928-8267-46bd-9b3f-a1cc7b0cc557)
